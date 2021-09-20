@@ -3,3 +3,5 @@ node_modules
 .vscode
 barang.sql
 retail.session.sql
+
+views
