@@ -1,3 +1,19 @@
+function addPriceListener(price){
+    const quantityInput = document.getElementById("item-quantity");
+
+    quantityInput.addEventListener('change', (evnt) => {
+        const parsedQuantity = parseInt(event.target.value);
+
+        if(isNaN(parsedQuantity) || parsedQuantity <= 0){
+            document.getElementById("item-quantity").value = "1"
+            return;
+        }
+
+        document.querySelector("#total-price").textContent = moneyFormat(price*parsedQuantity);
+    })
+}
+
+
 async function getProductData(){
     const params = new URLSearchParams(window.location.search)
     const productId = parseInt(params.get('id'));
@@ -38,7 +54,10 @@ async function showProduct(){
     itemDetailsNode.querySelector("#item-description").textContent = description;
     itemDetailsNode.querySelector("#item-stock").textContent = `Tersisa ${stock} barang!`;
     itemDetailsNode.querySelector("#item-sold").textContent = `${sold} Terjual`;
+    itemDetailsNode.querySelector("#total-price").textContent = moneyFormat(price);
 
     container.appendChild(itemThumbnailNode);
     container.appendChild(itemDetailsNode); 
+
+    addPriceListener(price)
 }

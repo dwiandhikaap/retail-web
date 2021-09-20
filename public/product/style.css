@@ -45,11 +45,12 @@ h2 {
 #item-cart-container {
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 #item-quantity {
+    height: 90%;
     width: 4rem;
-    margin-right: 1rem;
     text-align: center;
     font-size: 16px;
 
@@ -62,6 +63,7 @@ h2 {
     padding: 0.5rem 0.75rem;
     background-color: green;
     max-width: 9rem;
+    margin: 0px 1rem 0px 1rem;
     
     text-decoration: none;
     display: flex;
