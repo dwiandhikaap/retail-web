@@ -12,6 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../global/default.css">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="lds-roller.css">
     <script src="../global/header.js"></script>
     <title>Rajahost Cloud</title>
 
@@ -21,7 +22,9 @@
         </div>
         <div id="item-details">
             <h2 id="item-name"></h2>
-            <span id="item-price"></span>
+            <span id="item-price-container">
+                <span id="item-price"></span>
+            </span>
             <p id="item-description"></p>
             <span>
                 <span id="item-stock"></span>
@@ -85,7 +88,7 @@
     <!-- TODO: bikin loading state pas load sitenya -->
     <div class="page-content">
         <div id="item-info-container">
-            <h1>LOADING</h1>
+            <div class="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
         </div>
     </div>
     

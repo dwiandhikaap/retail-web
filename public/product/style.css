@@ -28,6 +28,27 @@ h2 {
     max-width: max(30vw, 300px);
 }
 
+#item-price-before {
+    font-size: 0.8rem;
+    font-weight: bold;
+    font-style: italic;
+    text-decoration: line-through;
+}
+
+#item-price-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#item-price-discount {
+    margin-left: 1rem;
+    padding: 2px 1rem 2px 1rem;
+    background-color: #ff2f6e;
+    color: white;
+    font-weight: bolder;
+}
+
 #item-price {
     font-size: 2rem;
     font-weight: lighter;

@@ -1,15 +1,17 @@
-function addPriceListener(price){
+function addPriceListener(price, stock){
     const quantityInput = document.getElementById("item-quantity");
-
+    quantityInput.setAttribute('max', stock);
     quantityInput.addEventListener('change', (evnt) => {
-        const parsedQuantity = parseInt(event.target.value);
 
+        const parsedQuantity = parseInt(evnt.target.value);
         if(isNaN(parsedQuantity) || parsedQuantity <= 0){
-            document.getElementById("item-quantity").value = "1"
+            quantityInput.value = "1";
             return;
         }
 
-        document.querySelector("#total-price").textContent = moneyFormat(price*parsedQuantity);
+        const finalQuantity = Math.min(parsedQuantity, stock);
+        quantityInput.value = finalQuantity;
+        document.querySelector("#total-price").textContent = moneyFormat(price*finalQuantity);
     })
 }
 
@@ -36,7 +38,7 @@ function sleep(ms) {
 async function showProduct(){
     const { product_name, price, discount, description, stock, sold } = await getProductData();
 
-    //await sleep(3000);
+    await sleep(300); // simulate loading
 
     const container = document.getElementById("item-info-container");
     const template = document.getElementsByTagName("template")[0];
@@ -50,14 +52,29 @@ async function showProduct(){
     const itemDetailsNode = document.importNode(itemDetails, true);
 
     itemDetailsNode.querySelector("#item-name").textContent = product_name;
-    itemDetailsNode.querySelector("#item-price").textContent = moneyFormat(price);
+    itemDetailsNode.querySelector("#item-price-container").querySelector("#item-price").textContent = moneyFormat(price*(100-discount)/100);
     itemDetailsNode.querySelector("#item-description").textContent = description;
     itemDetailsNode.querySelector("#item-stock").textContent = `Tersisa ${stock} barang!`;
     itemDetailsNode.querySelector("#item-sold").textContent = `${sold} Terjual`;
     itemDetailsNode.querySelector("#total-price").textContent = moneyFormat(price);
 
+    if(discount > 0){
+        const itemPriceBefore = document.createElement('span');
+        const itemPriceDiscount = document.createElement('div');
+        const itemPriceAfter = itemDetailsNode.querySelector("#item-price-container");
+        const itemPrice = itemPriceAfter.querySelector("#item-price");
+
+        itemPriceBefore.setAttribute('id', 'item-price-before');
+        itemPriceDiscount.setAttribute('id', 'item-price-discount');
+
+        itemPriceBefore.textContent = moneyFormat(price);
+        itemPriceDiscount.textContent = `Hemat ${discount}%`;
+        itemDetailsNode.insertBefore(itemPriceBefore, itemPriceAfter);
+        itemPriceAfter.insertBefore(itemPriceDiscount, itemPrice.nextSibling)
+    }
+
     container.appendChild(itemThumbnailNode);
     container.appendChild(itemDetailsNode); 
 
-    addPriceListener(price)
+    addPriceListener(price, stock)
 }
