@@ -33,13 +33,21 @@ router.get("/product_data", async(req, res) => {
     )
 })
 
-router.get("/add_to_cart", async(req, res) => {
+router.get("/get_cart", async(req, res) => {
+    //
+})
+
+router.post("/add_to_cart", async(req, res) => {
     const userId = req.session.user_id;
-    const productId = parseInt(req.query.id)
-    const productCount = parseInt(req.query.count)
+    const productId = parseInt(req.body.id);
+    const productCount = parseInt(req.body.count); 
+
+    if(!req.session.isAuth){
+        res.status(400).send("User is not authenticated!");
+    }
 
     if(isNaN(productId) || productId < 0 || isNaN(productCount) || productCount <= 0){
-        res.status(400).end();
+        res.status(400).send("Invalid cart data");
         return;
     }
 

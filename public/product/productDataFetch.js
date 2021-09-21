@@ -34,7 +34,6 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-// TODO: make it show product data as html
 async function showProduct(){
     const { product_name, price, discount, description, stock, sold } = await getProductData();
 
@@ -79,6 +78,28 @@ async function showProduct(){
     addPriceListener(price, stock)
 }
 
+// TODO: submit -> wait response -> update page content without refreshing the page
+// TODO: make navbar cart menu whiteFETCHABLE 
 async function submitCart(){
-    addNotif("lmao bruh", 3000);
+    const params = new URLSearchParams(window.location.search)
+    const productId = parseInt(params.get('id'));
+    const quantity = document.getElementById("item-quantity").value;
+
+    const cartResponse = await fetch('/api/add_to_cart', {
+        method: "POST",
+        headers: {
+            'Content-Type' : 'application/json' 
+        },
+        body: JSON.stringify({
+            id: productId,
+            count: quantity
+        })
+    })
+
+    if(cartResponse.status == 200){
+        addNotif("Successfully added item to your cart!", 3000, 'success');
+        return;
+    }
+    
+    addNotif(await cartResponse.text(), 3000, 'error');
 }
