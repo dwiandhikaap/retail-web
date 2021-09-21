@@ -114,7 +114,24 @@ async function dbGetUserByID(user_id){
     })
 }
 
+async function dbGetCartData(user_id, sortMode){
+    return new Promise((resolve, reject) => {
+        let cmd = `
+        SELECT cart_data.*, barang.product_name, barang.price, barang.discount 
+        FROM cart_data
+        LEFT JOIN barang
+        ON cart_data.barangid = barang.id
+        WHERE personId="${user_id}" 
+        ORDER by cartId ${sortMode};`
 
+
+        con.query(cmd, async(err, result) => {
+            if(err) return reject(err);
+
+            resolve(result);
+        })
+    })
+}
 
 async function dbCreateCartData(personId, productId, count){
     return new Promise((resolve, reject) => {
@@ -157,6 +174,7 @@ async function dbCreateCartData(personId, productId, count){
 module.exports = {
     dbInit : dbInit,
     dbGetData : dbGetData,
+    dbGetCartData : dbGetCartData,
     dbCreateUser : dbCreateUser,
     dbCreateCartData : dbCreateCartData,
     dbIsEmailRegistered : dbIsEmailRegistered,

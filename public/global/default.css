@@ -89,11 +89,11 @@ header{
     justify-items: end;
 }
 
-.nav-item a{
+.nav-item > a{
     margin: 0.5rem;
 }
 
-#profile-dropdown {
+.header-menu-dropdown {
     top: 4rem;
     
     padding: 1rem;
@@ -110,6 +110,67 @@ header{
 
     border: 1px solid rgba(0,0,0,0.25);
     border-radius: 0px 0px 8px 8px;
+}
+
+#cart-dropdown * {
+    color: black;
+}
+
+#cart-dropdown .cart-dropdown-item:not(:first-child){
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid hsl(0, 0%, 75%);
+}
+
+.cart-dropdown-item{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    max-width: 14rem;
+    max-height: 4rem;
+    margin: 0;
+}
+
+.cart-dropdown-item *{
+    margin: 0;
+}
+
+.cart-dropdown-item-name {
+    max-width: 6rem;
+    overflow: hidden;
+
+    font-size: 14px;
+    margin-right: 8px;
+}
+
+.cart-dropdown-item-price {
+    margin-left: 8px;
+}
+
+.cart-dropdown-item-price .price-total {
+    text-align: right;
+    width: 100%;
+    font-size: 16px;
+}
+
+.cart-dropdown-item-price .price {
+    text-align: right;
+    width: 100%;
+    font-weight: normal;
+    font-size: 11px;
+    font-style: italic;
+}
+
+#cart-dropdown-more {
+    margin: 0;
+}
+
+#cart-dropdown-more * {
+    text-align: center;
+    font-weight: normal;
+    font-style: italic;
+    font-size: 0.8rem;
+    margin: 8px;
 }
 
 #profile-dropdown span:first-child {

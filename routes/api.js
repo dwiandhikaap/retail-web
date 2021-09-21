@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { dbGetUserByID, dbGetData, dbCreateCartData } = require("../Util/DatabaseHandler");
+const { dbGetUserByID, dbGetData, dbCreateCartData, dbGetCartData } = require("../Util/DatabaseHandler");
 
 const router = Router();
 
@@ -34,18 +34,49 @@ router.get("/product_data", async(req, res) => {
 })
 
 router.get("/get_cart", async(req, res) => {
-    //
+    if(!req.session.isAuth){
+        res.status(400).send("User is not authenticated!");
+        return;
+    }
+
+    const userId = req.session.user_id;
+    const maxCount = parseInt(req.query.max); // Maximum number of cart data is requested
+    let sortMode = req.query.sort;
+
+    if(isNaN(maxCount) || maxCount < 1){
+        res.status(400).send("Invalid parameter!");
+        return;
+    }
+
+    if(sortMode == undefined || sortMode.toUpperCase() != 'DESC'){
+        sortMode = 'ASC';
+    }
+
+    try {
+        const items = await dbGetCartData(userId, sortMode);
+        const itemRemaining = Math.max(Object.keys(items).length - maxCount, 0);
+        
+        const cartData = {
+            items: items.slice(0, maxCount),
+            itemRemaining: itemRemaining
+        }
+
+        res.status(200).send(cartData);
+    } catch (error) {
+        res.status(500).send(error); 
+    }
 })
 
 router.post("/add_to_cart", async(req, res) => {
+    if(!req.session.isAuth){
+        res.status(401).send("User is not authenticated!");
+        return;
+    }
+
     const userId = req.session.user_id;
     const productId = parseInt(req.body.id);
     const productCount = parseInt(req.body.count); 
-
-    if(!req.session.isAuth){
-        res.status(400).send("User is not authenticated!");
-    }
-
+    
     if(isNaN(productId) || productId < 0 || isNaN(productCount) || productCount <= 0){
         res.status(400).send("Invalid cart data");
         return;
@@ -54,7 +85,7 @@ router.post("/add_to_cart", async(req, res) => {
     try {
         await dbCreateCartData(userId, productId, productCount);
     } catch (error) {
-        res.status(400).end(); 
+        res.status(500).send("Server database issue, try again later!"); 
         return;
     }
 
