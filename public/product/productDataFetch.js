@@ -78,3 +78,7 @@ async function showProduct(){
 
     addPriceListener(price, stock)
 }
+
+async function submitCart(){
+    addNotif("lmao bruh", 3000);
+}
