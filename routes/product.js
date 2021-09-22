@@ -10,7 +10,6 @@ router.get("/", async(req, res, next) => {
     router.use("/global", express.static(path.join(__dirname, '../public/global')));
 
     //res.send("asdaiksduas")
-    console.log(req.query.id);
     next();
 });
 
