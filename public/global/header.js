@@ -24,7 +24,6 @@ function hideAllDropdownExcept(divId){
     const dropdowns = document.getElementsByClassName("header-menu-dropdown");
     for(dropdown of dropdowns){
         if(dropdown.id != divId){
-            console.log(dropdown.id, "!=", divId)
             dropdown.style.opacity = "0";
             
             dropdown.style.visibility = "hidden";
@@ -40,11 +39,16 @@ function hideDropdown(dropdown){
 }
 
 async function updateCartDropdown(){
-    const cartResponse = await fetch('/api/get_cart?max=5&sort=desc').then(res => res.json());
-    const {items, itemRemaining} = cartResponse;
-    
+    const cartResponse = await fetch('/api/get_cart?max=5&sort=desc');
     const dropdownContainer = document.getElementById('cart-dropdown');
     dropdownContainer.innerHTML = '';
+    
+    if(cartResponse.status == 401){
+        dropdownContainer.innerHTML = `<span class="cart-info" style="color: black">Anda belum login!</span>`;
+        return;
+    }
+
+    const {items, itemRemaining} = await cartResponse.json();
     
     if(items.length == 0){
         dropdownContainer.innerHTML = `<span class="cart-info" style="color: black">Keranjang anda kosong!</span>`;

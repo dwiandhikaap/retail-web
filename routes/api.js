@@ -35,7 +35,7 @@ router.get("/product_data", async(req, res) => {
 
 router.get("/get_cart", async(req, res) => {
     if(!req.session.isAuth){
-        res.status(400).send("User is not authenticated!");
+        res.status(401).send("User is not authenticated!");
         return;
     }
 
