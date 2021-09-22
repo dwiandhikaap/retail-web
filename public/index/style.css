@@ -19,6 +19,7 @@
     font-family: 'Roboto', sans-serif;
 
     max-width: min(9rem, 30vw);
+    width: 9rem;
     display: flex;
     flex-direction: column;
 }
@@ -39,3 +40,8 @@
     font-weight: 800;
 }
 
+@media (max-width: 1050px){
+    #shop-item-list{
+        justify-content: center;
+    }
+}
