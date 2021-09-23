@@ -4,6 +4,7 @@
     <script>
         async function onSiteLoad(){
             await onHeaderLoad();
+            await getCartData();
         }
     </script>
     <meta charset="UTF-8">
@@ -15,7 +16,12 @@
     <link rel="stylesheet" href="style.css">
     <script src="../global/header.js"></script>
     <script src="../global/notif.js"></script>
+    <script src="checkoutCartScript.js"></script>
     <title>Rajahost Cloud</title>
+
+    <template>
+        
+    </template>
 
 </head>
 <body onload="onSiteLoad()">
@@ -72,70 +78,8 @@
             <h1>Checkout</h1>
         </div>
         <div class="checkout-body">
-            <div class="checkout-cart-container">
-                <!-- TODO: MAKE THE CHECKBOX ID DYNAMIC 
-                    ACCORDING ITS PRODUCT ID 
-
-                -->
-                <div class="checkout-cart">
-                    <input type="checkbox" name="checkout-cart-checkbox" id="checkout-cart-checkbox" class="checkout-cart-checkbox">
-                    <div id="checkout-cart-thumbnail">
-                        <img src="https://loremflickr.com/86/86" width="86" height="86">
-                    </div>
-                    <div class="checkout-cart-item-details">
-                        <div class="product-name">
-                            <a href="#">very long product name ur mom gay 420 balls no cap yeet 69 swag</a>
-                        </div>
-                        <span class="product-info-top">
-                            <span class="price-discount">
-                                -25%
-                            </span>
-                            <span class="price-before">
-                                Rp 20.000,00
-                            </span>
-                        </span>
-                        <br>
-                        <span class="product-info-bottom">
-                            <span class="price-after">
-                                Rp 15.000,00
-                            </span>
-                            x
-                            <span class="item-quantity">
-                                @10 pcs
-                            </span>
-                        </span>
-                    </div>
-                    <div class="checkout-cart-price-total">
-                        Rp 150.000,00
-                    </div>
-                </div>
-                <div class="checkout-cart">
-                    <input type="checkbox" name="checkout-cart-checkbox" id="checkout-cart-checkbox" class="checkout-cart-checkbox">
-                    <div id="checkout-cart-thumbnail">
-                        <img src="https://loremflickr.com/86/86" width="86" height="86">
-                    </div>
-                    <div class="checkout-cart-item-details">
-                        <div class="product-name">
-                            <a href="#">very long product name ur mom gay 420 balls no cap yeet 69 swag</a>
-                        </div>
-                        <span class="product-info-top">
-                            
-                        </span>
-                        <br>
-                        <span class="product-info-bottom">
-                            <span class="price-after">
-                                Rp 15.000,00
-                            </span>
-                            x
-                            <span class="item-quantity">
-                                @10 pcs
-                            </span>
-                        </span>
-                    </div>
-                    <div class="checkout-cart-price-total">
-                        Rp 150.000,00
-                    </div>
-                </div>
+            <div id="checkout-cart-container">
+                
             </div>
             <div class="checkout-price-container">
                 <input type="text" placeholder="Masukan kode promo!" name="checkout-kode-promo" class="checkout-kode-promo" id="checkout-kode-promo">
