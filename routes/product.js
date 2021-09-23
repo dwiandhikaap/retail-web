@@ -5,7 +5,7 @@ const { Router } = require('express');
 
 const router = Router();
 
-router.get("/", async(req, res, next) => {
+router.get("/", (req, res, next) => {
     router.use("/", express.static(path.join(__dirname, '../public/product')));
     router.use("/global", express.static(path.join(__dirname, '../public/global')));
 

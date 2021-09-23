@@ -14,6 +14,7 @@ const registerRoute = require("./routes/register");
 const loginRoute = require("./routes/login");
 const logoutRoute = require("./routes/logout");
 const productRoute = require("./routes/product");
+const checkoutRoute = require("./routes/checkout");
 const apiRoute = require("./routes/api");
 
 dbInit();
@@ -48,6 +49,7 @@ app.use("/api", apiRoute);
 app.use("/register", registerRoute);
 app.use("/login", loginRoute);
 app.use("/product", productRoute);
+app.use("/checkout", checkoutRoute);
 app.use("/logout", logoutRoute);
 
 app.listen(5000, console.log("Server is running on http://localhost:5000"));

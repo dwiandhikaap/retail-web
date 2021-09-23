@@ -4,12 +4,16 @@
 
 :root{
     --header-color: #4C49E9;
+    --body-bg-color: hsl(0, 0%, 93%);
     --footer-color: hsl(241, 28%, 14%);
     --h1-color: hsla(241, 78%, 30%, 1);
     --p-color: hsla(0, 0%, 40%, 1);
     --p-color-footer-primary: hsl(0, 0%, 100%);
     --p-color-footer-secondary: hsl(0, 0%, 60%);
     --a-color-footer: hsl(0, 0%, 70%);
+
+    --red-primary: hsl(0, 100%, 50%);
+    --green-primary: hsl(119, 100%, 17%);
 }
 
 h1 {
@@ -50,6 +54,7 @@ span {
 body{
     margin: 0;
     padding: 0;
+    background-color: var(--body-bg-color);
 }
 
 header{
@@ -61,6 +66,15 @@ header{
     justify-content: space-evenly;
     margin: 0;
 }
+
+.product-name {
+    font-family: 'Helvetica', sans-serif;
+    font-weight: normal;
+    font-size: 16px;
+    color: hsl(0, 0%, 50%);
+}
+
+/* Contents & Divs CSS */
 
 .nav-logo{
     padding: 0.5rem 0 0.5rem 0;
@@ -91,6 +105,10 @@ header{
 
 .nav-item > a{
     margin: 0.5rem;
+}
+
+.nav-item > a:hover{
+    cursor: pointer;
 }
 
 .header-menu-dropdown {
@@ -201,7 +219,21 @@ header{
     flex-direction: column;
     align-items: center;
 
+    background-color: white;
+    border-left: 1px solid hsl(0, 0%, 75%);
+    border-right: 1px solid hsl(0, 0%, 75%);
+}
 
+/* 
+    I needed this before, but now i dont.
+    But i'll keep it here just in case ... 
+*/
+.flex-align-left{
+    align-items: flex-start;
+}
+
+.flex-align-right{
+    align-items: flex-end;
 }
 
 footer{
@@ -276,10 +308,6 @@ footer{
     display: inline-block;
     vertical-align: top;
 }
-
-
-
-
 
 
 
