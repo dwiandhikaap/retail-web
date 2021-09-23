@@ -4,7 +4,6 @@
     <script>
         async function onSiteLoad(){
             await onHeaderLoad();
-            await showProduct();
         }
     </script>
     <meta charset="UTF-8">
@@ -12,8 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../global/default.css">
     <link rel="stylesheet" href="../global/notif.css">
+    <link rel="stylesheet" href="../global/lds-css/lds-roller.css">
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="lds-roller.css">
     <script src="../global/header.js"></script>
     <script src="../global/notif.js"></script>
     <title>Rajahost Cloud</title>
@@ -76,10 +75,7 @@
             <div class="checkout-cart-container">
                 <!-- TODO: MAKE THE CHECKBOX ID DYNAMIC 
                     ACCORDING ITS PRODUCT ID 
-                    
-                    TODO: move lds roller to global folder
 
-                    TODO: bikin price total disamping kanan 
                 -->
                 <div class="checkout-cart">
                     <input type="checkbox" name="checkout-cart-checkbox" id="checkout-cart-checkbox" class="checkout-cart-checkbox">
