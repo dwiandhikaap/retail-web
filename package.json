@@ -18,6 +18,7 @@
     "express-session": "^1.17.2",
     "mysql-import": "^5.0.21",
     "mysql2": "^2.3.0",
+    "nocache": "^3.0.1",
     "uuid": "^8.3.2"
   }
 }

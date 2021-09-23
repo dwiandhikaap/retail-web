@@ -6,13 +6,6 @@ const express = require("express");
 const router = Router();
 
 router.use("/", express.static(path.join(__dirname, '../public/login')));
-router.use("/global", express.static(path.join(__dirname, '../public/global')));
-
-router.get("/", (req, res) => {
-    //res.sendFile(path.join(__dirname, '../public/login/index.html'))
-    //res.sendFile('../public/login/index.html')
-    //res.render('login.ejs');
-});
 
 router.post("/", async(req, res) => {
     const { email, password } = req.body;

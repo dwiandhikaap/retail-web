@@ -16,17 +16,12 @@ const logoutRoute = require("./routes/logout");
 const productRoute = require("./routes/product");
 const checkoutRoute = require("./routes/checkout");
 const apiRoute = require("./routes/api");
+const globalRoute = require("./routes/global")
 
 dbInit();
 
 app.disable("etag");
 //app.set("view-engine", "ejs");
-
-/* app.use(
-  express.static(path.join(__dirname, 'public'), {
-    etag: false,
-  })
-); */
 
 app.use(
   session({
@@ -49,6 +44,7 @@ app.use("/api", apiRoute);
 app.use("/register", registerRoute);
 app.use("/login", loginRoute);
 app.use("/product", productRoute);
+app.use("/global", globalRoute);
 app.use("/checkout", checkoutRoute);
 app.use("/logout", logoutRoute);
 

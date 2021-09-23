@@ -7,12 +7,7 @@ const { dbIsEmailRegistered, dbCreateUser } = require("../Util/DatabaseHandler")
 const router = Router();
 
 router.use("/", express.static(path.join(__dirname, '../public/register')));
-router.use("/global", express.static(path.join(__dirname, '../public/global')));
 
-router.get("/", (req, res) => {
-    //res.sendFile('register')
-    //res.render('register.ejs');
-});
 
 router.post("/", async (req, res) =>{
     const { name, email, password } = req.body;
