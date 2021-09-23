@@ -4,9 +4,12 @@
 
     max-width: 60vw;
 
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 12rem);
+    justify-content: space-between;
+    grid-gap: 20px;
+
+    
 }
 
 .shop-item {
@@ -38,10 +41,4 @@
 .shop-item-price {
     font-family: 'Roboto', sans-serif;
     font-weight: 800;
-}
-
-@media (max-width: 1050px){
-    #shop-item-list{
-        justify-content: center;
-    }
 }
