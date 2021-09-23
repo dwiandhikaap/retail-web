@@ -40,13 +40,8 @@ router.get("/get_cart", async(req, res) => {
     }
 
     const userId = req.session.user_id;
-    const maxCount = parseInt(req.query.max); // Maximum number of cart data is requested
+    let maxCount = parseInt(req.query.max);
     let sortMode = req.query.sort;
-
-    if(isNaN(maxCount) || maxCount < 1){
-        res.status(400).send("Invalid parameter!");
-        return;
-    }
 
     if(sortMode == undefined || sortMode.toUpperCase() != 'DESC'){
         sortMode = 'ASC';
@@ -54,14 +49,21 @@ router.get("/get_cart", async(req, res) => {
 
     try {
         const items = await dbGetCartData(userId, sortMode);
-        const itemRemaining = Math.max(Object.keys(items).length - maxCount, 0);
         
-        const cartData = {
+        if(isNaN(maxCount)){
+            console.log("asd");
+            res.status(200).send({
+                items: items,
+                itemRemaining: 0
+            });
+            return;
+        }
+        
+        const itemRemaining = Math.max(Object.keys(items).length - maxCount, 0);
+        res.status(200).send({
             items: items.slice(0, maxCount),
             itemRemaining: itemRemaining
-        }
-
-        res.status(200).send(cartData);
+        });
     } catch (error) {
         res.status(500).send(error); 
     }
