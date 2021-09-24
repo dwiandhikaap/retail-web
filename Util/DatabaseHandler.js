@@ -207,8 +207,12 @@ async function dbValidateCartTransaction(cartEntries, userId){
 
     let totalPrice = 0;
     for(cartEntry of cartEntries){
-        const {barangId, barangJumlah} = cartEntry;
+        const {barangId, barangJumlah, resolved} = cartEntry;
         const {stock,price,discount} = selectedItemsObj[barangId];
+
+        if(resolved.readUInt8() == 1){
+            throw new Error("Cart data is already resolved!"); // avoid paying paid item
+        }
 
         if(stock < barangJumlah){
             throw new Error("Stock is less than order quantity!");
