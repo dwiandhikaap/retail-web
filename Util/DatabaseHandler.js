@@ -95,14 +95,24 @@ async function dbGetUserBalance(user_id){
     return (await con.query(queryString))[0][0].balance;
 }
 
-async function dbGetCartData(user_id, sortMode){
+async function dbGetCartData(user_id, sortMode, filter){
+    let resolvedValue = 0;
+    if(filter.toUpperCase() == "RESOLVED"){
+        resolvedValue = 1;
+    }
+
+    const filterString = `
+        AND resolved=${resolvedValue}
+    `
+
     let queryString = `
-    SELECT cart_data.*, barang.product_name, barang.price, barang.discount 
-    FROM cart_data
-    LEFT JOIN barang
-    ON cart_data.barangid = barang.id
-    WHERE personId="${user_id}" 
-    ORDER by cartId ${sortMode};`
+        SELECT cart_data.*, barang.product_name, barang.price, barang.discount 
+        FROM cart_data
+        LEFT JOIN barang
+        ON cart_data.barangid = barang.id
+        WHERE personId="${user_id}" ${filter != "UNFILTERED" ? filterString : ""}
+        ORDER by cartId ${sortMode};
+    `
 
     return (await con.query(queryString))[0];
 }
