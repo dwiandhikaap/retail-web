@@ -121,7 +121,7 @@ header{
     flex-direction: column;
     background-color: rgb(255, 255, 255);
 
-    visibility: visible;
+    visibility: hidden;
     transition: opacity 0.25s linear;
 
     z-index: 100;
