@@ -27,22 +27,12 @@ async function dbGetData(table, index_start, index_end){
         indexRangeStr = `=${index_start}`;
     }
 
-    return new Promise((resolve, reject) => {
-        try {
-            const cmd = `
-            SELECT * FROM ${table}
+    const cmd = `
+    SELECT * FROM ${table}
 
-            WHERE id${indexRangeStr}
-            `
-            con.query(cmd, (err, result) => {
-                if(err) throw err;
-
-                resolve(result);
-            })
-        } catch (error) {
-            reject(error);
-        }
-    })
+    WHERE id${indexRangeStr}
+    `
+    return (await con.query(cmd))[0];
 }
 
 async function dbCreateUser(name, email, password){
@@ -53,140 +43,140 @@ async function dbCreateUser(name, email, password){
     VALUES("${name}", "${email}", "${hashedPassword}", 0.0, "");
     `
     
-    con.query(cmd, (err, result) => {
-        if(err) throw err;
-
-        //console.log(result);
-    })
+    await con.query(cmd);
 }
 
 async function dbIsEmailRegistered(email){
-    return new Promise((resolve, reject) => {
-        const cmd = `
-        SELECT email FROM person WHERE email="${email}"
-        `
-        con.query(cmd, function async(err, result) {
-            if(err) return reject(err);
+    const cmd = `
+    SELECT email FROM person WHERE email="${email}"
+    `
+    const result = (await con.query(cmd))[0]
 
-            if(Object.keys(result).length == 1){
-                resolve(true);
-            }
-            resolve(false);
-        })
-    })
+    if(Object.keys(result).length == 1){
+        return true;
+    }
+
+    return false;
 }
 
 async function dbAuthUser(email, password){
-    return new Promise((resolve, reject) => {
-        const cmd = `
-        SELECT password FROM person WHERE email="${email}"
-        `
-        con.query(cmd, async(err, result) => {
-            if(err) return reject(err);
+    const cmd = `
+    SELECT password FROM person WHERE email="${email}"
+    `
+    const result = (await con.query(cmd))[0]
 
-            const isEqual = await bcrypt.compare(password, result[0].password)
-            resolve(isEqual);
-        })
-    })
+    const isEqual = await bcrypt.compare(password, result[0].password)
+    return isEqual;
 }
 
 async function dbGetIDByEmail(email){
-    return new Promise((resolve, reject) => {
-        const cmd = `
-        SELECT id FROM person WHERE email="${email}"
-        `
-        con.query(cmd, async(err, result) => {
-            if(err) return reject(err);
+    const cmd = `
+    SELECT id FROM person WHERE email="${email}"
+    `
+    const result = (await con.query(cmd))[0];
 
-            resolve(result[0].id);
-        })
-    })
+    return result[0].id;
 }
 
 async function dbGetUserByID(user_id){
-    return new Promise((resolve, reject) => {
-        const cmd = `
-        SELECT * FROM person WHERE id="${user_id}"
-        `
-        con.query(cmd, async(err, result) => {
-            if(err) return reject(err);
+    const cmd = `
+    SELECT name,balance FROM person WHERE id="${user_id}"
+    `
+    return (await con.query(cmd))[0][0];
+}
 
-            resolve(result[0]);
-        })
-    })
+async function dbGetUserBalance(user_id){
+    const queryString = `
+        -- @BLOCK
+        SELECT balance FROM person
+        WHERE id="${user_id}";
+    `
+
+    return (await con.query(queryString))[0][0].balance;
 }
 
 async function dbGetCartData(user_id, sortMode){
-    return new Promise((resolve, reject) => {
-        let cmd = `
-        SELECT cart_data.*, barang.product_name, barang.price, barang.discount 
-        FROM cart_data
-        LEFT JOIN barang
-        ON cart_data.barangid = barang.id
-        WHERE personId="${user_id}" 
-        ORDER by cartId ${sortMode};`
+    let queryString = `
+    SELECT cart_data.*, barang.product_name, barang.price, barang.discount 
+    FROM cart_data
+    LEFT JOIN barang
+    ON cart_data.barangid = barang.id
+    WHERE personId="${user_id}" 
+    ORDER by cartId ${sortMode};`
 
-
-        con.query(cmd, async(err, result) => {
-            if(err) return reject(err);
-
-            resolve(result);
-        })
-    })
+    return (await con.query(queryString))[0];
 }
 
 async function dbCreateCartData(personId, productId, count){
-    return new Promise((resolve, reject) => {
-        
-        // JavaScript god-tier variable naming 🗿
-        const checkIfStockIsEnough = `
-            SELECT * FROM barang WHERE id=${productId};
-        `
+    // JavaScript god-tier variable naming 🗿
+    const checkIfStockIsEnough = `
+        SELECT * FROM barang WHERE id=${productId};
+    `
 
-        const insertNewCartData = `
-            INSERT INTO cart_data(barangId, barangJumlah, personId)
+    const insertNewCartData = `
+        INSERT INTO cart_data(barangId, barangJumlah, personId)
+
+        VALUES("${productId}", "${count}", "${personId}");
+    `
     
-            VALUES("${productId}", "${count}", "${personId}");
-        `
-        
-        // could use mysql2 promise but couldn't bother refactoring everything else 😔
-        // TODO: now that i use mysql2, pls refactor this hot garbage below
-        con.query(checkIfStockIsEnough, (err, result) => {
-            if(err || result.length == 0 || result[0].stock < count){
-                reject("lmao");
-
-                return;
-            }
-            con.query(insertNewCartData, (err, result) => {
-    
-                if(err){
-                    reject("lmao");
-                    return;
-                }
-                
-                resolve("poggers");
-            })
-        })
-        
-            
-    })
-}
-
-async function dbValidateCartEntries(cartIds, userId){
-    for (cartId of cartIds){
-        const queryString = `
-            -- @BLOCK
-            SELECT personId FROM cart_data
-            WHERE cartId=${cartId}
-        `
-        
-        const result = await con.query(queryString);
-        if (result[0][0].personId != userId){
-            return false
-        }
+    const queryBarangResult = (await con.query(checkIfStockIsEnough))[0]
+    if(queryBarangResult.length == 0 || queryBarangResult[0].stock < count){
+        throw new Error("lmao");
     }
 
-    return true;
+    await con.query(insertNewCartData);
+}
+
+async function dbRetrieveCartEntries(cartIds){
+    const cartIdsString = [...cartIds].toString();
+    const queryString = `
+        -- @BLOCK
+        SELECT * FROM cart_data
+        WHERE cartId in (${cartIdsString})
+    `
+    
+    const result = (await con.query(queryString))[0];
+    return result;
+}
+
+function dbValidateCartEntries(cartEntries, userId){
+    for (cartEntry of cartEntries){
+        if(cartEntry.personId != userId){
+            throw new Error("Current user is different from at least one of the cart owner!");
+        }
+    }
+}
+
+async function dbValidateCartTransaction(cartEntries, userId){
+    const barangIds = cartEntries.map(cartEntry => cartEntry.barangId)
+    const queryString = `
+        -- @BLOCK
+        SELECT id,price,stock,discount FROM barang
+        WHERE id in (${barangIds.toString()})
+    `
+    const selectedItems = (await con.query(queryString))[0];
+    let selectedItemsObj = new Object();
+    for(item of selectedItems){
+        const {id, ...itemData} = item;
+        selectedItemsObj[id] = itemData;
+    }
+
+    let totalPrice = 0;
+    for(entry of cartEntries){
+        const {barangId, barangJumlah} = entry;
+        const {stock,price,discount} = selectedItemsObj[barangId];
+
+        if(stock < barangJumlah){
+            throw new Error("Stock is less than order quantity!");
+        }
+        totalPrice += price*barangJumlah*(100-discount)/100;
+    }
+
+    if(await dbGetUserBalance(userId) < totalPrice){
+        throw new Error("Insufficient user balance!");
+    };
+
+    console.log(cartEntries);
 }
 
 // todo, make db utils here
@@ -197,7 +187,9 @@ module.exports = {
     dbGetCartData : dbGetCartData,
     dbCreateUser : dbCreateUser,
     dbCreateCartData : dbCreateCartData,
+    dbRetrieveCartEntries : dbRetrieveCartEntries,
     dbValidateCartEntries : dbValidateCartEntries,
+    dbValidateCartTransaction : dbValidateCartTransaction,
     dbIsEmailRegistered : dbIsEmailRegistered,
     dbAuthUser : dbAuthUser,
     dbGetIDByEmail : dbGetIDByEmail,
