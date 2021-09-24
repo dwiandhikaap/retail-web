@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { dbGetUserByID, dbGetData, dbCreateCartData, dbGetCartData } = require("../Util/DatabaseHandler");
+const { dbGetUserByID, dbGetData, dbCreateCartData, dbGetCartData, dbValidateCartEntries, dbRetrieveCartEntries, dbValidateCartTransaction, dbIncreaseCartQuantity, dbFindExistingUserCart } = require("../Util/DatabaseHandler");
 
 const router = Router();
 
@@ -49,9 +49,7 @@ router.get("/get_cart", async(req, res) => {
 
     try {
         const items = await dbGetCartData(userId, sortMode);
-        
         if(isNaN(maxCount)){
-            console.log("asd");
             res.status(200).send({
                 items: items,
                 itemRemaining: 0
@@ -65,6 +63,7 @@ router.get("/get_cart", async(req, res) => {
             itemRemaining: itemRemaining
         });
     } catch (error) {
+        console.log(error);
         res.status(500).send(error); 
     }
 })
@@ -84,18 +83,65 @@ router.post("/add_to_cart", async(req, res) => {
         return;
     }
 
+    /* console.log(await dbFindExistingUserCart(userId, productId));
+    console.log(await dbIsStockEnough(productId, 467)) */
     try {
-        await dbCreateCartData(userId, productId, productCount);
+        const existingCart = await dbFindExistingUserCart(userId, productId);
+        if(existingCart){
+            dbIncreaseCartQuantity(existingCart, productCount);
+        }        
+        else{
+            await dbCreateCartData(userId, productId, productCount);
+        }
     } catch (error) {
+        console.error(error);
         res.status(500).send("Server database issue, try again later!"); 
         return;
-    }
+    }  
 
     res.status(200).end()
 })
 
 router.get('/is_authenticated', (req, res) => {
     res.status(200).send(req.session.isAuth ? true : false);
+})
+
+router.get('/transaction/pay', async(req, res) => {
+    if(!req.session.isAuth){
+        res.status(401).send("User is not authenticated!");
+        return;
+    } 
+
+    const userId = req.session.user_id;
+    const cartIds = new Set();  // Ignore duplicate entries
+
+    // Sanitize any sus string , we only accept number
+    for(cartItem of req.body){
+        const parsedCartId = parseInt(cartItem.cartId);
+        if(isNaN(parsedCartId)){
+            res.status(400).send("Invalid cart id!");
+            return;
+        }
+        cartIds.add(parsedCartId);
+    }
+
+    const cartEntries = await dbRetrieveCartEntries(cartIds);
+    if(Object.keys(cartEntries).length == 0){
+        res.status(400).send("No such cart data is found!");
+        return;
+    }
+
+    try {
+        dbValidateCartEntries(cartEntries, userId);
+        await dbValidateCartTransaction(cartEntries, userId)
+    } catch (error) {
+        console.log(error);
+        res.status(400).send(error.message)
+        return;
+    }
+
+    res.send("ok")
+    return;
 })
 
 module.exports = router;

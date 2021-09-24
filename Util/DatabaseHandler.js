@@ -107,23 +107,57 @@ async function dbGetCartData(user_id, sortMode){
     return (await con.query(queryString))[0];
 }
 
-async function dbCreateCartData(personId, productId, count){
-    // JavaScript god-tier variable naming 🗿
-    const checkIfStockIsEnough = `
-        SELECT * FROM barang WHERE id=${productId};
+async function dbFindExistingUserCart(personId, barangId){
+    const queryString = `
+        SELECT * FROM cart_data
+        WHERE barangId="${barangId}" AND personId="${personId}";
     `
 
-    const insertNewCartData = `
-        INSERT INTO cart_data(barangId, barangJumlah, personId)
+    const cartFound = (await con.query(queryString))[0][0];
 
-        VALUES("${productId}", "${count}", "${personId}");
-    `
+    if(!cartFound){
+        return false;
+    }
     
-    const queryBarangResult = (await con.query(checkIfStockIsEnough))[0]
-    if(queryBarangResult.length == 0 || queryBarangResult[0].stock < count){
-        throw new Error("lmao");
+    return cartFound;
+}
+
+async function dbIncreaseCartQuantity(cartData, increment){
+    const cartItemQuantity = cartData.barangJumlah;
+    
+    if(!await dbIsStockEnough(cartData.barangId, cartItemQuantity + increment)){
+        throw new Error("Stock is not enough!")
     }
 
+    const queryString = `
+        UPDATE cart_data
+        set barangJumlah = barangJumlah+${increment}
+        where cartId="${cartData.cartId}";
+    `
+
+    await con.query(queryString);
+}
+
+async function dbIsStockEnough(productId, quantity){
+    // JavaScript god-tier variable naming 🗿
+    const queryString = `
+        SELECT stock FROM barang WHERE id=${productId};
+    `
+
+    return (await con.query(queryString))[0][0].stock >= quantity;
+}
+
+async function dbCreateCartData(personId, productId, count){
+    const insertNewCartData = `
+        INSERT INTO cart_data(barangId, barangJumlah, personId, resolved)
+
+        VALUES("${productId}", "${count}", "${personId}", 0);
+    `
+    
+    if(!await dbIsStockEnough(productId, count)){
+        throw new Error("Stock is not enough!");
+    }
+    
     await con.query(insertNewCartData);
 }
 
@@ -162,8 +196,8 @@ async function dbValidateCartTransaction(cartEntries, userId){
     }
 
     let totalPrice = 0;
-    for(entry of cartEntries){
-        const {barangId, barangJumlah} = entry;
+    for(cartEntry of cartEntries){
+        const {barangId, barangJumlah} = cartEntry;
         const {stock,price,discount} = selectedItemsObj[barangId];
 
         if(stock < barangJumlah){
@@ -172,11 +206,52 @@ async function dbValidateCartTransaction(cartEntries, userId){
         totalPrice += price*barangJumlah*(100-discount)/100;
     }
 
+    // TODO: make util function to calculate totalPrice with tax, promo, etc..
+    // currently just hardcoded the tax
+    totalPrice = totalPrice*110/100;
+
     if(await dbGetUserBalance(userId) < totalPrice){
         throw new Error("Insufficient user balance!");
     };
 
-    console.log(cartEntries);
+    for(cartEntry of cartEntries){
+        const {cartId, barangId, barangJumlah} = cartEntry;
+        
+        await dbDecreaseBarangStock(barangId, barangJumlah);
+        await dbResolveCart(cartId);
+    }
+
+    await dbDecreaseUserBalance(userId, totalPrice);
+}
+
+async function dbDecreaseBarangStock(barangId, decrement){
+    const queryString = `
+        UPDATE barang
+        set stock = stock-${decrement}
+        where id="${barangId}";
+    `
+
+    await con.query(queryString);
+}
+
+async function dbDecreaseUserBalance(userId, decrement){
+    const queryString = `
+        UPDATE person
+        set balance = balance-${decrement}
+        where id="${userId}";
+    `
+
+    await con.query(queryString);
+}
+
+async function dbResolveCart(cartId){
+    const queryString = `
+        UPDATE cart_data
+        set resolved = 1
+        where cartId="${cartId}";
+    `
+
+    await con.query(queryString);
 }
 
 // todo, make db utils here
@@ -186,6 +261,9 @@ module.exports = {
     dbGetData : dbGetData,
     dbGetCartData : dbGetCartData,
     dbCreateUser : dbCreateUser,
+    dbFindExistingUserCart : dbFindExistingUserCart,
+    dbIncreaseCartQuantity : dbIncreaseCartQuantity,
+    dbIsStockEnough : dbIsStockEnough,
     dbCreateCartData : dbCreateCartData,
     dbRetrieveCartEntries : dbRetrieveCartEntries,
     dbValidateCartEntries : dbValidateCartEntries,
