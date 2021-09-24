@@ -81,29 +81,35 @@
             <div id="checkout-cart-container">
                 
             </div>
-            <div class="checkout-price-container">
+            <div id="checkout-price-container">
                 <input type="text" placeholder="Masukan kode promo!" name="checkout-kode-promo" class="checkout-kode-promo" id="checkout-kode-promo">
                 <div class="checkout-price-details">
                     <div class="price-total">
                         <span class="price-total-text">Total</span>
-                        <span class="price-total-value">Rp 273.560,00</span>
+                        <span id="price-total-value">Rp 0,00</span>
                     </div>
                     <div class="price-tax">
                         <span class="price-tax-text">PPn 10%</span>
-                        <span class="price-tax-value">Rp 27.356,00</span>
+                        <span id="price-tax-value">Rp 0,00</span>
                     </div>
                     <div class="price-promo">
                         <div class="price-promo-text">
                             <span class="price-promo-name">Kode Promo</span>
-                            <p class="price-promo-details">"Potongan harga Rp 20.000,00"</p>
+                            <p class="price-promo-details"></p>
                         </div>
-                        <span class="price-promo-value">- Rp 20.000</span>
+                        <span id="price-promo-value">- Rp 0,00</span>
                     </div>
                 </div>
                 <div class="checkout-price-grand-total">
                     <span class="price-grand-total-text">Grand Total</span>
-                    <span class="price-grand-total-value">Rp 280.916,00</span>
+                    <span id="price-grand-total-value">Rp 0,00</span>
                 </div>
+                <button class="checkout-pay-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style="fill: currentColor"><path d="M21 4H3a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1zm-1 11a3 3 0 0 0-3 3H7a3 3 0 0 0-3-3V9a3 3 0 0 0 3-3h10a3 3 0 0 0 3 3v6z"></path><path d="M12 8c-2.206 0-4 1.794-4 4s1.794 4 4 4 4-1.794 4-4-1.794-4-4-4zm0 6c-1.103 0-2-.897-2-2s.897-2 2-2 2 .897 2 2-.897 2-2 2z"></path></svg>
+                        <span>
+                            Bayar
+                        </span>
+                </button>
             </div>
         </div>
     </div>
