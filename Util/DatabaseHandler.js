@@ -1,22 +1,24 @@
 require('dotenv').config()
 
 //const { resolveInclude } = require('ejs');
-const mysql = require('mysql2');
+//const mysql = require('mysql2');
+const mysql = require('mysql2/promise')
 const bcrypt = require('bcrypt');
 
-const con = mysql.createConnection({
-    host: process.env.DB_HOST,
-    user: process.env.DB_USER,
-    password: process.env.DB_PASSWORD,
-    database: process.env.DB_NAME
-});
+var con = undefined;
 
 async function dbInit(){
-    con.connect( err => {
-        if(err) throw err;
-        console.log("Connected!");
-    })
-} 
+    con = await mysql.createConnection({
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASSWORD,
+        database: process.env.DB_NAME
+    });
+
+    con.connect()
+    .catch((err) => console.error(err))
+    .then(console.log("Database is connected!"))
+}
 
 async function dbGetData(table, index_start, index_end){
     let indexRangeStr = ` BETWEEN ${index_start} AND ${index_end}`;
@@ -148,6 +150,7 @@ async function dbCreateCartData(personId, productId, count){
         `
         
         // could use mysql2 promise but couldn't bother refactoring everything else 😔
+        // TODO: now that i use mysql2, pls refactor this hot garbage below
         con.query(checkIfStockIsEnough, (err, result) => {
             if(err || result.length == 0 || result[0].stock < count){
                 reject("lmao");
@@ -169,6 +172,23 @@ async function dbCreateCartData(personId, productId, count){
     })
 }
 
+async function dbValidateCartEntries(cartIds, userId){
+    for (cartId of cartIds){
+        const queryString = `
+            -- @BLOCK
+            SELECT personId FROM cart_data
+            WHERE cartId=${cartId}
+        `
+        
+        const result = await con.query(queryString);
+        if (result[0][0].personId != userId){
+            return false
+        }
+    }
+
+    return true;
+}
+
 // todo, make db utils here
 
 module.exports = {
@@ -177,6 +197,7 @@ module.exports = {
     dbGetCartData : dbGetCartData,
     dbCreateUser : dbCreateUser,
     dbCreateCartData : dbCreateCartData,
+    dbValidateCartEntries : dbValidateCartEntries,
     dbIsEmailRegistered : dbIsEmailRegistered,
     dbAuthUser : dbAuthUser,
     dbGetIDByEmail : dbGetIDByEmail,
