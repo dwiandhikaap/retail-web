@@ -39,7 +39,7 @@ function hideDropdown(dropdown){
 }
 
 async function updateCartDropdown(){
-    const cartResponse = await fetch('/api/get_cart?max=5&sort=desc');
+    const cartResponse = await fetch('/api/get_cart?max=5&sort=desc&filter=unresolved');
     const dropdownContainer = document.getElementById('cart-dropdown');
     dropdownContainer.innerHTML = '';
     
