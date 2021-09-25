@@ -40,6 +40,7 @@ router.get("/get_cart", async(req, res) => {
     }
 
     const userId = req.session.user_id;
+    let filter = req.query.filter;
     let maxCount = parseInt(req.query.max);
     let sortMode = req.query.sort;
 
@@ -47,8 +48,12 @@ router.get("/get_cart", async(req, res) => {
         sortMode = 'ASC';
     }
 
+    if(filter == undefined || (filter.toUpperCase() != 'RESOLVED' && filter.toUpperCase() != 'UNRESOLVED') ){
+        filter = 'UNFILTERED';
+    }
+
     try {
-        const items = await dbGetCartData(userId, sortMode);
+        const items = await dbGetCartData(userId, sortMode, filter);
         if(isNaN(maxCount)){
             res.status(200).send({
                 items: items,
@@ -106,7 +111,7 @@ router.get('/is_authenticated', (req, res) => {
     res.status(200).send(req.session.isAuth ? true : false);
 })
 
-router.get('/transaction/pay', async(req, res) => {
+router.post('/transaction/pay', async(req, res) => {
     if(!req.session.isAuth){
         res.status(401).send("User is not authenticated!");
         return;
