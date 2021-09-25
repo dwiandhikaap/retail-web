@@ -4,3 +4,5 @@ node_modules
 barang.sql
 retail.session.sql
 views
+notes
+known-issue.md
