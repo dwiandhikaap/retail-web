@@ -68,7 +68,7 @@ async function dbDecreaseUserBalance(userId, decrement){
         where id="${userId}";
     `
 
-    await con.query(queryString);
+    await sqlQuery(queryString);
 }
 
 
