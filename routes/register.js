@@ -2,7 +2,7 @@ const express = require("express");
 const { Router } = require("express");
 const path = require("path");
 
-const { dbIsEmailRegistered, dbCreateUser } = require("../Util/DatabaseHandler");
+const { dbIsEmailRegistered, dbCreateUser } = require("../Util/DatabaseHandler/User");
 
 const router = Router();
 

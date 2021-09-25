@@ -1,7 +1,7 @@
 const { Router } = require("express");
-const { dbIsEmailRegistered, dbAuthUser, dbGetIDByEmail } = require("../Util/DatabaseHandler");
 const path = require("path");
 const express = require("express");
+const { dbIsEmailRegistered, dbAuthUser, dbGetIDByEmail } = require("../Util/DatabaseHandler/User");
 
 const router = Router();
 

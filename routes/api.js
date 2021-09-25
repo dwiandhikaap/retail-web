@@ -1,5 +1,7 @@
 const { Router } = require("express");
-const { dbGetUserByID, dbGetData, dbCreateCartData, dbGetCartData, dbValidateCartEntries, dbRetrieveCartEntries, dbValidateCartTransaction, dbIncreaseCartQuantity, dbFindExistingUserCart } = require("../Util/DatabaseHandler");
+const { dbGetData } = require("../Util/DatabaseHandler")
+const { dbGetUserByID } = require("../Util/DatabaseHandler/User");
+const { dbGetCartData, dbCreateCartData, dbValidateCartEntries, dbRetrieveCartEntries, dbValidateCartTransaction, dbIncreaseCartQuantity, dbFindExistingUserCart } = require("../Util/DatabaseHandler/Cart");
 
 const router = Router();
 
