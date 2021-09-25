@@ -40,14 +40,14 @@
     font-family: Helvetica, sans-serif;
 }
 
-.checkout-cart > *{
-    margin-left: 16px;
+.checkout-cart > *:not(:first-child){
+    margin-right: 8px;
 }
 
 .checkout-cart-checkbox {
-    margin: 4px;
-    width: 32px;
-    height: 32px;
+    margin: 4px 8px 4px 0;
+    min-width: 2rem;
+    min-height: 2rem;
 }
 
 .checkout-cart-item-details *{
@@ -175,7 +175,7 @@
     text-align: right;
 }
 
-.checkout-pay-button {
+#checkout-pay-button {
     margin-top: 1rem;
     padding: 4px 0;
     width: 100%;
@@ -191,21 +191,26 @@
     border: none;
 }
 
-.checkout-pay-button:hover,
-.checkout-pay-button:focus {
+#checkout-pay-button:disabled{
+    background-color: hsl(342, 100%, 80%);
+}
+
+#checkout-pay-button:hover:enabled,
+#checkout-pay-button:focus:enabled{
+    cursor: pointer;
     background-color: hsl(342, 100%, 50%);
 }
 
-.checkout-pay-button:focus{
+#checkout-pay-button:focus:enabled{
     outline: 1px solid white;
     outline-offset: -4px;
 }
 
-.checkout-pay-button:active {
+#checkout-pay-button:active:enabled {
     background-color: hsl(342, 100%, 25%);
 }
 
-.checkout-pay-button * {
+#checkout-pay-button * {
     font-family: 'Roboto', sans-serif;
     font-weight: bold;
     color: white;

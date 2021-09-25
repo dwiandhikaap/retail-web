@@ -48,7 +48,7 @@ const cartDataMarkup = (
 `}
 
 async function getCartData(){
-    const response = await fetch('/api/get_cart/?sort=desc');
+    const response = await fetch('/api/get_cart/?sort=desc&filter=unresolved');
 
     if(response.status != 200){
         addNotif("Terjadi masalah saat mengambil data!", 3000, 'error');
@@ -57,7 +57,6 @@ async function getCartData(){
 
     const { items } = await response.json();
     for(item of items){
-        console.log(item);
         const cartDiv = document.createElement("div");
         cartDiv.setAttribute("class", "checkout-cart");
         const markup = cartDataMarkup(item);
@@ -66,4 +65,78 @@ async function getCartData(){
         const cartContainer = document.getElementById("checkout-cart-container");
         cartContainer.appendChild(cartDiv);
     }
+
+    addCartCheckboxEventListener();
+    updateCheckoutPrice();
+}
+
+function addCartCheckboxEventListener(){
+    const checkboxs = document.getElementsByClassName("checkout-cart-checkbox");
+    for(checkbox of checkboxs){
+        checkbox.addEventListener("change", () => {
+            updateCheckoutPrice();
+        })
+    }
+}
+
+// TODO: make it update the price thing on the right
+// TODO: implement payment
+function updateCheckoutPrice(){
+    const cartDivs = document.getElementsByClassName("checkout-cart");
+    document.getElementById("checkout-pay-button").disabled = true;
+
+    let priceTotal = 0.0;
+    for(cartDiv of cartDivs){
+        const checkbox = cartDiv.querySelector(".checkout-cart-checkbox");
+        if(checkbox.checked){
+            const priceStr = cartDiv.querySelector(".checkout-cart-price-total").textContent;
+            priceTotal += parseFloat(priceStr.replace(/\D+/g, ""))/100;
+            document.getElementById("checkout-pay-button").disabled = false;
+        }
+    }
+    
+    const tax = priceTotal/10;
+    const pricePromoSpan = document.getElementById('price-promo-value');
+
+    const promo = parseFloat((pricePromoSpan.textContent).replace(/\D+/g, ""))/100;
+
+    const priceTotalSpan = document.getElementById('price-total-value');
+    const priceTaxSpan = document.getElementById('price-tax-value');
+    const priceGrandTotalSpan = document.getElementById('price-grand-total-value');
+
+    priceTotalSpan.textContent = moneyFormat(priceTotal);
+    priceTaxSpan.textContent = moneyFormat(tax);
+
+    priceGrandTotalSpan.textContent = moneyFormat(priceTotal+tax-promo);
+}
+
+async function executePayment(){
+    const cartCheckboxes = document.getElementsByClassName("checkout-cart-checkbox");
+    const regexp = /\d+(?=\D*$)/;
+    let checkoutCartData = [];
+
+    for(checkbox of cartCheckboxes){
+        if(checkbox.checked){
+            const checkboxCartId = regexp.exec(checkbox.getAttribute("id"))[0];
+            checkoutCartData.push({
+                cartId: checkboxCartId
+            })
+        }
+    }
+    
+    const checkoutPayload = JSON.stringify(checkoutCartData);
+    const checkoutFetch = await fetch("/api/transaction/pay", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: checkoutPayload
+    })
+
+    if(checkoutFetch.status == 200){
+        addNotif("Pembayaran telah berhasil!", 3000, "success")
+        return;
+    } 
+
+    addNotif("Pembayaran gagal!", 3000, "error")
 }
