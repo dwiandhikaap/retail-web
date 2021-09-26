@@ -79,8 +79,6 @@ function addCartCheckboxEventListener(){
     }
 }
 
-// TODO: make it update the price thing on the right
-// TODO: implement payment
 function updateCheckoutPrice(){
     const cartDivs = document.getElementsByClassName("checkout-cart");
     document.getElementById("checkout-pay-button").disabled = true;
@@ -138,5 +136,5 @@ async function executePayment(){
         return;
     } 
 
-    addNotif("Pembayaran gagal!", 3000, "error")
+    addNotif(await checkoutFetch.text(), 3000, "error")
 }

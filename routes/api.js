@@ -142,8 +142,13 @@ router.post('/transaction/pay', async(req, res) => {
         dbValidateCartEntries(cartEntries, userId);
         await dbValidateCartTransaction(cartEntries, userId)
     } catch (error) {
+        if(error.code == "INVALID_CART_REQUEST"){
+            res.status(400).send(error.message)
+            return;
+        }
+
         console.log(error);
-        res.status(400).send(error.message)
+        res.status(503).send("Server database issue, try again later!"); 
         return;
     }
 

@@ -1,7 +1,6 @@
 const { sqlQuery } = require("../DatabaseHandler");
 
 async function dbIsStockEnough(productId, quantity){
-    // JavaScript god-tier variable naming 🗿
     const queryString = `
         SELECT stock FROM barang WHERE id=${productId};
     `

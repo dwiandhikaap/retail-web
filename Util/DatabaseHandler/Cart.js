@@ -1,3 +1,4 @@
+const { InvalidCartRequest } = require("../CustomException");
 const { sqlQuery } = require("../DatabaseHandler");
 const { dbIsStockEnough, dbDecreaseBarangStock } = require("./Barang");
 const { dbGetUserBalance, dbDecreaseUserBalance } = require("./User");
@@ -44,7 +45,7 @@ async function dbIncreaseCartQuantity(cartData, increment){
     const cartItemQuantity = cartData.barangJumlah;
     
     if(!await dbIsStockEnough(cartData.barangId, cartItemQuantity + increment)){
-        throw new Error("Stock is not enough!")
+        throw new InvalidCartRequest("Stock is not enough!")
     }
 
     const queryString = `
@@ -64,7 +65,7 @@ async function dbCreateCartData(personId, productId, count){
     `
     
     if(!await dbIsStockEnough(productId, count)){
-        throw new Error("Stock is not enough!");
+        throw InvalidCartRequest("Stock is not enough!");
     }
     
     await sqlQuery(insertNewCartData);
@@ -85,7 +86,7 @@ async function dbRetrieveCartEntries(cartIds){
 function dbValidateCartEntries(cartEntries, userId){
     for (cartEntry of cartEntries){
         if(cartEntry.personId != userId){
-            throw new Error("Current user is different from at least one of the cart owner!");
+            throw InvalidCartRequest("Current user is different from at least one of the cart owner!");
         }
     }
 }
@@ -110,11 +111,11 @@ async function dbValidateCartTransaction(cartEntries, userId){
         const {stock,price,discount} = selectedItemsObj[barangId];
 
         if(resolved.readUInt8() == 1){
-            throw new Error("Cart data is already resolved!"); // avoid paying paid item
+            throw InvalidCartRequest("Cart data is already resolved!"); // avoid paying paid item
         }
 
         if(stock < barangJumlah){
-            throw new Error("Stock is less than order quantity!");
+            throw InvalidCartRequest("Stock is less than order quantity!");
         }
         totalPrice += price*barangJumlah*(100-discount)/100;
     }
@@ -124,7 +125,7 @@ async function dbValidateCartTransaction(cartEntries, userId){
     totalPrice = totalPrice*110/100;
 
     if(await dbGetUserBalance(userId) < totalPrice){
-        throw new Error("Insufficient user balance!");
+        throw InvalidCartRequest("Insufficient user balance!");
     };
 
     for(cartEntry of cartEntries){
