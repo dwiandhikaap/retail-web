@@ -4,7 +4,6 @@ async function menuFetch(){
         .then(data => updateList(data))
 }
 
-// TODO: move menu-fetch to index
 function updateList(items){
     const itemList = document.getElementById("shop-item-list");
     const temp = document.getElementsByTagName("template")[0];

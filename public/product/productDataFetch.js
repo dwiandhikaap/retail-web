@@ -78,8 +78,6 @@ async function showProduct(){
     addPriceListener(price, stock)
 }
 
-// TODO: submit -> wait response -> update page content without refreshing the page
-// TODO: make navbar cart menu whiteFETCHABLE 
 async function submitCart(){
     const params = new URLSearchParams(window.location.search)
     const productId = parseInt(params.get('id'));
