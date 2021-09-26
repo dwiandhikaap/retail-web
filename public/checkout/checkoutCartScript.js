@@ -48,6 +48,10 @@ const cartDataMarkup = (
 `}
 
 async function getCartData(){
+    if(!await isUserAuth()){
+        return;
+    }
+
     const response = await fetch('/api/get_cart/?sort=desc&filter=unresolved');
 
     if(response.status != 200){
@@ -137,4 +141,10 @@ async function executePayment(){
     } 
 
     addNotif(await checkoutFetch.text(), 3000, "error")
+}
+
+async function isUserAuth(){
+    const isAuth = await fetch("/api/is_authenticated");
+
+    return isAuth.json();
 }
