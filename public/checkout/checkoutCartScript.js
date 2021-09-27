@@ -47,6 +47,29 @@ const cartDataMarkup = (
             </div>
 `}
 
+async function getPromoDetails(priceTotal, promoCode){
+
+    console.log(({
+        code: promoCode,
+        totalSpent: parseInt(priceTotal)
+    }));
+
+    const promoDetails = await fetch('/api/promo/details', {
+        method: 'POST',
+        headers : {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            code: promoCode,
+            totalSpent: parseInt(priceTotal)
+        })
+    }).then(data => data.json());
+
+    console.log(promoDetails);
+
+    return promoDetails;
+}
+
 async function getCartData(){
     if(!await isUserAuth()){
         return;
@@ -83,7 +106,8 @@ function addCartCheckboxEventListener(){
     }
 }
 
-function updateCheckoutPrice(){
+
+async function updateCheckoutPrice(){
     const cartDivs = document.getElementsByClassName("checkout-cart");
     document.getElementById("checkout-pay-button").disabled = true;
 
@@ -98,24 +122,42 @@ function updateCheckoutPrice(){
     }
     
     const tax = priceTotal/10;
-    const pricePromoSpan = document.getElementById('price-promo-value');
-
-    const promo = parseFloat((pricePromoSpan.textContent).replace(/\D+/g, ""))/100;
-
+    
     const priceTotalSpan = document.getElementById('price-total-value');
     const priceTaxSpan = document.getElementById('price-tax-value');
     const priceGrandTotalSpan = document.getElementById('price-grand-total-value');
 
+    const promoCode = document.getElementById("checkout-kode-promo").value;
+
+    let promoDetails = {
+        info: "",
+        discount: 0,
+        message: ""
+    }
+    if(promoCode != ""){
+        promoDetails = await getPromoDetails(priceTotal, promoCode);
+    }
+        
+    const {info, discount, message} = promoDetails
+
+    document.getElementById("checkout-promo-info").textContent = info;
+    document.getElementById('price-promo-value').textContent = moneyFormat(parseInt(discount));
+    document.getElementById('price-promo-details').textContent = message;
+    document.getElementById('price-grand-total-value').textContent = moneyFormat(priceTotal*110/100-discount)
+
     priceTotalSpan.textContent = moneyFormat(priceTotal);
     priceTaxSpan.textContent = moneyFormat(tax);
 
-    priceGrandTotalSpan.textContent = moneyFormat(priceTotal+tax-promo);
+    priceGrandTotalSpan.textContent = moneyFormat(priceTotal+tax-discount);
+
 }
 
 async function executePayment(){
     const cartCheckboxes = document.getElementsByClassName("checkout-cart-checkbox");
     const regexp = /\d+(?=\D*$)/;
     let checkoutCartData = [];
+
+    const promoCode = document.getElementById("checkout-kode-promo").value;
 
     for(checkbox of cartCheckboxes){
         if(checkbox.checked){
@@ -126,7 +168,11 @@ async function executePayment(){
         }
     }
     
-    const checkoutPayload = JSON.stringify(checkoutCartData);
+    const checkoutPayload = JSON.stringify({
+        promoCode : promoCode,
+        checkoutCartData: checkoutCartData
+    });
+
     const checkoutFetch = await fetch("/api/transaction/pay", {
         method: "POST",
         headers: {

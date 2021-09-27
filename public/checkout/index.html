@@ -82,7 +82,8 @@
                 
             </div>
             <div id="checkout-price-container">
-                <input type="text" placeholder="Masukan kode promo!" name="checkout-kode-promo" class="checkout-kode-promo" id="checkout-kode-promo">
+                <input type="text" onfocusout="updateCheckoutPrice()" placeholder="Masukan kode promo!" name="checkout-kode-promo" class="checkout-kode-promo" id="checkout-kode-promo">
+                <span id="checkout-promo-info"></span>
                 <div class="checkout-price-details">
                     <div class="price-total">
                         <span class="price-total-text">Total</span>
@@ -95,7 +96,7 @@
                     <div class="price-promo">
                         <div class="price-promo-text">
                             <span class="price-promo-name">Kode Promo</span>
-                            <p class="price-promo-details"></p>
+                            <p id="price-promo-details"></p>
                         </div>
                         <span id="price-promo-value">- Rp 0,00</span>
                     </div>
