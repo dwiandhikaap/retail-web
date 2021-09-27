@@ -88,7 +88,6 @@
 #checkout-price-container {
     margin: -5px 0 0 auto;
     padding: 1rem;
-    max-height: 16rem;
     justify-content: space-between;
     display: flex;
     flex-direction: column;

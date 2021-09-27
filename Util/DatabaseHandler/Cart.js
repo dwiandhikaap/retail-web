@@ -1,6 +1,7 @@
 const { InvalidCartRequest } = require("../CustomException");
 const { sqlQuery } = require("../DatabaseHandler");
 const { dbIsStockEnough, dbDecreaseBarangStock } = require("./Barang");
+const { applyPromoCode } = require("./Promo");
 const { dbGetUserBalance, dbDecreaseUserBalance } = require("./User");
 
 async function dbGetCartData(user_id, sortMode, filter){
@@ -91,7 +92,7 @@ function dbValidateCartEntries(cartEntries, userId){
     }
 }
 
-async function dbValidateCartTransaction(cartEntries, userId){
+async function dbValidateCartTransaction(cartEntries, promoCode, userId){
     const barangIds = cartEntries.map(cartEntry => cartEntry.barangId)
     const queryString = `
         -- @BLOCK
@@ -120,9 +121,8 @@ async function dbValidateCartTransaction(cartEntries, userId){
         totalPrice += price*barangJumlah*(100-discount)/100;
     }
 
-    // TODO: make util function to calculate totalPrice with tax, promo, etc..
-    // currently just hardcoded the tax
-    totalPrice = totalPrice*110/100;
+    const discount = await applyPromoCode(totalPrice, promoCode);
+    totalPrice = (totalPrice*110/100)-discount;
 
     if(await dbGetUserBalance(userId) < totalPrice){
         throw InvalidCartRequest("Insufficient user balance!");
@@ -134,7 +134,7 @@ async function dbValidateCartTransaction(cartEntries, userId){
         await dbDecreaseBarangStock(barangId, barangJumlah);
         await dbResolveCart(cartId);
     }
-
+    
     await dbDecreaseUserBalance(userId, totalPrice);
 }
 

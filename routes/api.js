@@ -2,6 +2,7 @@ const { Router } = require("express");
 const { dbGetData } = require("../Util/DatabaseHandler")
 const { dbGetUserByID } = require("../Util/DatabaseHandler/User");
 const { dbGetCartData, dbCreateCartData, dbValidateCartEntries, dbRetrieveCartEntries, dbValidateCartTransaction, dbIncreaseCartQuantity, dbFindExistingUserCart } = require("../Util/DatabaseHandler/Cart");
+const { createPromoCode, getPromoDetails } = require("../Util/DatabaseHandler/Promo");
 
 const router = Router();
 
@@ -122,8 +123,10 @@ router.post('/transaction/pay', async(req, res) => {
     const userId = req.session.user_id;
     const cartIds = new Set();  // Ignore duplicate entries
 
+    const { promoCode, checkoutCartData } = req.body;
+
     // Sanitize any sus string , we only accept number
-    for(cartItem of req.body){
+    for(cartItem of checkoutCartData){
         const parsedCartId = parseInt(cartItem.cartId);
         if(isNaN(parsedCartId)){
             res.status(400).send("Invalid cart id!");
@@ -140,9 +143,10 @@ router.post('/transaction/pay', async(req, res) => {
 
     try {
         dbValidateCartEntries(cartEntries, userId);
-        await dbValidateCartTransaction(cartEntries, userId)
+        await dbValidateCartTransaction(cartEntries, promoCode, userId)
     } catch (error) {
-        if(error.code == "INVALID_CART_REQUEST"){
+        if( error.code == "INVALID_CART_REQUEST" || 
+            error.code == "REJECTED_PROMO_CODE"){
             res.status(400).send(error.message)
             return;
         }
@@ -155,5 +159,53 @@ router.post('/transaction/pay', async(req, res) => {
     res.send("ok")
     return;
 })
+
+router.post('/promo/create', async(req, res) => {
+    const promoData = req.body;
+    try {
+        await createPromoCode(promoData);
+    } catch (error) {
+        if(error.code == "INVALID_PROMO_DATA"){
+            res.status(400).send(error.message);
+            return;
+        }
+
+        console.log(error);
+        res.status(400).end();
+        return;
+    }
+
+    res.status(200).end();
+})
+
+router.post('/promo/details', async(req, res) => {
+    const { totalSpent, code } = req.body;
+    
+    if(  totalSpent == undefined || !code){
+        res.status(400).end();
+        return;
+    }
+
+    try {
+        var promoDetails = await getPromoDetails(totalSpent, code)
+        promoDetails.info = "Promo dapat digunakan!";
+        res.status(200).send(JSON.stringify(promoDetails));
+    } catch (error) {
+        console.log();
+        if(error.code == "REJECTED_PROMO_CODE"){
+            res.status(200).send(JSON.stringify({
+                discount: 0,
+                message: "",
+                info: error.message
+            }));
+            return;
+        }
+
+        res.status(503).send("Server database issue, try again later!"); 
+        console.log(error);
+        return;
+    }
+})
+
 
 module.exports = router;
