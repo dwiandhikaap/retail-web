@@ -1,8 +1,47 @@
-const { InvalidCartRequest } = require("../CustomException");
+const { InvalidCartRequest, CartNotFound } = require("../CustomException");
 const { sqlQuery } = require("../DatabaseHandler");
 const { dbIsStockEnough, dbDecreaseBarangStock } = require("./Barang");
 const { applyPromoCode } = require("./Promo");
 const { dbGetUserBalance, dbDecreaseUserBalance } = require("./User");
+
+async function dbGetCartById(cartId){
+    const queryString = `
+    SELECT * FROM cart_data
+    WHERE cartId="${cartId}";
+    `;
+
+    const result = (await sqlQuery(queryString))[0][0];
+    return result;
+}
+
+async function dbGetCartOwner(cartId){
+    const queryString = `
+    SELECT personId FROM cart_data
+    WHERE cartId="${cartId}";
+    `;
+
+    const result = (await sqlQuery(queryString))[0][0].personId;
+    return result;
+}
+
+async function dbUpdateCartQuantity(cartId, quantity){
+    const cartData = await dbGetCartById(cartId);
+    if(!cartData){
+        throw new CartNotFound("User cart is not found!");
+    }
+
+    if(!await dbIsStockEnough(cartData.barangId, quantity)){
+        throw new InvalidCartRequest("Stock is not enough!")
+    }
+
+    const queryString = `
+        UPDATE cart_data
+        SET barangJumlah=${quantity}
+        WHERE cartId="${cartId}";
+    `;
+
+    await sqlQuery(queryString);
+}
 
 async function dbGetCartData(user_id, sortMode, filter){
     let resolvedValue = 0;
@@ -150,7 +189,9 @@ async function dbResolveCart(cartId){
 
 module.exports = {
     dbGetCartData : dbGetCartData,
+    dbGetCartOwner : dbGetCartOwner,
     dbFindExistingUserCart : dbFindExistingUserCart,
+    dbUpdateCartQuantity : dbUpdateCartQuantity,
     dbIncreaseCartQuantity : dbIncreaseCartQuantity,
     dbCreateCartData : dbCreateCartData,
     dbRetrieveCartEntries : dbRetrieveCartEntries,

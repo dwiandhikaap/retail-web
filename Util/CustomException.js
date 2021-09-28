@@ -5,6 +5,13 @@ function InvalidCartRequest(message){
     return error;
 }
 
+function CartNotFound(message){
+    const error = new Error(message)
+    
+    error.code = "CART_NOT_FOUND";
+    return error;
+}
+
 function RejectedPromoCode(message){
     const error = new Error(message)
     
@@ -22,6 +29,7 @@ function InvalidPromoData(message){
 
 module.exports = {
     InvalidCartRequest : InvalidCartRequest,
+    CartNotFound : CartNotFound,
     RejectedPromoCode : RejectedPromoCode,
     InvalidPromoData : InvalidPromoData
 }
