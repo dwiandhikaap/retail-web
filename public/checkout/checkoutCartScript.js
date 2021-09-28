@@ -14,6 +14,7 @@ const cartDataMarkup = (
                     <span class="price-before">
                         ${moneyFormat(price)}
                     </span>
+                    <br>
                 `;
             }
             return '';
@@ -31,19 +32,22 @@ const cartDataMarkup = (
                 <span class="product-info-top">
                     ${discountMarkup()}
                 </span>
-                <br>
                 <span class="product-info-bottom">
                     <span class="price-after">
                         ${moneyFormat(price*(100-discount)/100)}
                     </span>
                     x
-                    <span class="item-quantity">
-                        @${barangJumlah} pcs
-                    </span>
+                    <input type="number" class="item-quantity" id="item-quantity-${cartId}" data-cartId="${cartId}" name="item-quantity" value=${barangJumlah} min="1">
+                    pc(s)
                 </span>
             </div>
-            <div class="checkout-cart-price-total">
-                ${moneyFormat(price*(100-discount)/100*barangJumlah)}
+            <div>
+                <div class="checkout-cart-price-total">
+                    ${moneyFormat(price*(100-discount)/100*barangJumlah)}
+                </div>
+                <div class="checkout-cart-remove">
+                    Hapus
+                </div>
             </div>
 `}
 
@@ -83,18 +87,20 @@ async function getCartData(){
     }
 
     const { items } = await response.json();
+    const cartContainer = document.getElementById("checkout-cart-container");
+    cartContainer.innerHTML = "";
     for(item of items){
         const cartDiv = document.createElement("div");
         cartDiv.setAttribute("class", "checkout-cart");
         const markup = cartDataMarkup(item);
         cartDiv.innerHTML = markup;
-
-        const cartContainer = document.getElementById("checkout-cart-container");
+        
         cartContainer.appendChild(cartDiv);
     }
 
     addCartCheckboxEventListener();
     updateCheckoutPrice();
+    addQuantityListener();
 }
 
 function addCartCheckboxEventListener(){
@@ -193,4 +199,51 @@ async function isUserAuth(){
     const isAuth = await fetch("/api/is_authenticated");
 
     return isAuth.json();
+}
+
+// script for user cart data quantity adjustment
+function addQuantityListener(){
+    const quantityInputs = document.getElementsByClassName("item-quantity");
+
+    for(quantityInput of quantityInputs){
+        // This is a certified bruh moment
+        const quantityId = quantityInput.getAttribute("id");
+
+        const actualQuantityInput = document.getElementById(quantityId);
+        actualQuantityInput.addEventListener('change', async(evnt) => {
+            actualQuantityInput.disabled = true;
+            const parsedQuantity = parseInt(evnt.target.value);
+            if(isNaN(parsedQuantity) || parsedQuantity <= 0){
+                actualQuantityInput.value = "1";
+                console.log(actualQuantityInput.value);
+            }
+
+            const cartId = actualQuantityInput.dataset.cartid;
+            const quantity = parseInt(actualQuantityInput.value);
+
+            await updateCartQuantity(cartId, quantity);
+        })
+        
+        
+    }
+}
+
+async function updateCartQuantity(cartId, quantity){
+    const response = await fetch("/api/update_cart", {
+        method : "POST",
+        headers: {
+            "Content-Type" : "application/json"
+        },
+        body: JSON.stringify({
+            cartId: cartId,
+            quantity: quantity
+        })
+    })
+
+    if(response.status != 200){
+        addNotif(await response.text(), 3000, "error");
+        return;
+    }
+
+    await getCartData();
 }
