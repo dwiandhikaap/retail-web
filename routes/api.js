@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const { dbGetData } = require("../Util/DatabaseHandler")
 const { dbGetUserByID } = require("../Util/DatabaseHandler/User");
-const { dbGetCartData, dbCreateCartData, dbValidateCartEntries, dbRetrieveCartEntries, dbValidateCartTransaction, dbIncreaseCartQuantity, dbFindExistingUserCart, dbGetCartOwner, dbUpdateCartQuantity } = require("../Util/DatabaseHandler/Cart");
+const { dbGetCartData, dbCreateCartData, dbValidateCartEntries, dbRetrieveCartEntries, dbValidateCartTransaction, dbIncreaseCartQuantity, dbFindExistingUserCart, dbGetCartOwner, dbUpdateCartQuantity, dbDeleteCart } = require("../Util/DatabaseHandler/Cart");
 const { createPromoCode, getPromoDetails } = require("../Util/DatabaseHandler/Promo");
 
 const router = Router();
@@ -106,6 +106,37 @@ router.post("/update_cart", async(req, res) => {
                 return;
             }
         res.status(400).send("Unknown Error!");
+        return;
+    }
+
+    res.status(200).end();
+})
+
+router.post("/delete_cart", async(req, res) =>{
+    if(!req.session.isAuth){
+        res.status(401).send("User is not authenticated!");
+        return;
+    }
+
+    const userId = req.session.user_id;
+    const cartId = parseInt(req.body.cartId);
+
+    if(isNaN(cartId) || cartId < 0){
+        res.status(400).send("Invalid cart id!");
+        return;
+    }
+
+    const ownerId = await dbGetCartOwner(cartId);
+    if(ownerId != userId){
+        res.status(403).send("User is not authorized!");
+        return;
+    }
+
+    try {
+        await dbDeleteCart(cartId);
+    } catch (error) {
+        console.log(error);
+        res.status(400).send("");
         return;
     }
 

@@ -45,7 +45,7 @@ const cartDataMarkup = (
                 <div class="checkout-cart-price-total">
                     ${moneyFormat(price*(100-discount)/100*barangJumlah)}
                 </div>
-                <div class="checkout-cart-remove">
+                <div class="checkout-cart-remove" onclick="deleteCart(${cartId})">
                     Hapus
                 </div>
             </div>
@@ -245,5 +245,25 @@ async function updateCartQuantity(cartId, quantity){
         return;
     }
 
+    await getCartData();
+}
+
+async function deleteCart(cartId){
+    const response = await fetch("/api/delete_cart", {
+        method: "POST",
+        headers: {
+            "Content-Type" : "application/json"
+        },
+        body: JSON.stringify({
+            cartId: cartId
+        })
+    })
+
+    if(response.status != 200){
+        addNotif(response.text(), 3000, "error");
+        return;
+    }
+
+    addNotif("Keranjang berhasil dihapus!", 3000, "success");
     await getCartData();
 }

@@ -111,6 +111,15 @@ async function dbCreateCartData(personId, productId, count){
     await sqlQuery(insertNewCartData);
 }
 
+async function dbDeleteCart(cartId){
+    const queryString = `
+        DELETE FROM cart_data
+        WHERE cartId=${cartId};
+    `
+
+    await sqlQuery(queryString);
+}
+
 async function dbRetrieveCartEntries(cartIds){
     const cartIdsString = [...cartIds].toString();
     const queryString = `
@@ -194,6 +203,7 @@ module.exports = {
     dbUpdateCartQuantity : dbUpdateCartQuantity,
     dbIncreaseCartQuantity : dbIncreaseCartQuantity,
     dbCreateCartData : dbCreateCartData,
+    dbDeleteCart : dbDeleteCart,
     dbRetrieveCartEntries : dbRetrieveCartEntries,
     dbValidateCartEntries : dbValidateCartEntries,
     dbValidateCartTransaction : dbValidateCartTransaction,
