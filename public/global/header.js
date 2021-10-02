@@ -4,7 +4,7 @@ function moneyFormat(amount){
 
 
 async function isUserAuth(){
-    const isAuth = await fetch("/api/is_authenticated");
+    const isAuth = await fetch("/api/v1/user/is_authenticated");
 
     return isAuth.json();
 }
@@ -39,7 +39,7 @@ function hideDropdown(dropdown){
 }
 
 async function updateCartDropdown(){
-    const cartResponse = await fetch('/api/get_cart?max=5&sort=desc&filter=unresolved');
+    const cartResponse = await fetch('/api/v1/cart/get_cart?max=5&sort=desc&filter=unresolved');
     const dropdownContainer = document.getElementById('cart-dropdown');
     dropdownContainer.innerHTML = '';
     
@@ -118,7 +118,7 @@ async function onHeaderLoad(){
 
     setDropdownProfile();
 
-    await fetch("/api/user_profile")
+    await fetch("/api/v1/user/user_profile")
         .then(res => res.json())
         .then(data => setUserProfile(data))
 }

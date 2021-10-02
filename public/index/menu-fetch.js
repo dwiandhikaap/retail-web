@@ -1,5 +1,5 @@
 async function menuFetch(){
-    await fetch("/api/shop_items")
+    await fetch("/api/v1/product/shop_items")
         .then(res => res.json())
         .then(data => updateList(data))
 }

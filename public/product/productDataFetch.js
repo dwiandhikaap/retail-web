@@ -24,7 +24,7 @@ async function getProductData(){
         return;
     }
     
-    const productData = await fetch(`/api/product_data/?id=${productId}`)
+    const productData = await fetch(`/api/v1/product/product_data/?id=${productId}`)
                             .then(data => data.json());
 
     return productData[0];                       
@@ -83,7 +83,7 @@ async function submitCart(){
     const productId = parseInt(params.get('id'));
     const quantity = document.getElementById("item-quantity").value;
 
-    const cartResponse = await fetch('/api/add_to_cart', {
+    const cartResponse = await fetch('/api/v1/cart/add_to_cart', {
         method: "POST",
         headers: {
             'Content-Type' : 'application/json' 

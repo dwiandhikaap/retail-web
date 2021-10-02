@@ -52,7 +52,7 @@ const cartDataMarkup = (
 `}
 
 async function getPromoDetails(priceTotal, promoCode){
-    const promoDetails = await fetch('/api/promo/details', {
+    const promoDetails = await fetch('/api/v1/promo/details', {
         method: 'POST',
         headers : {
             'Content-Type': 'application/json'
@@ -71,7 +71,7 @@ async function getCartData(){
         return;
     }
 
-    const response = await fetch('/api/get_cart/?sort=desc&filter=unresolved');
+    const response = await fetch('/api/v1/cart/get_cart/?sort=desc&filter=unresolved');
 
     if(response.status != 200){
         addNotif("Terjadi masalah saat mengambil data!", 3000, 'error');
@@ -171,7 +171,7 @@ async function executePayment(){
         checkoutCartData: checkoutCartData
     });
 
-    const checkoutFetch = await fetch("/api/transaction/pay", {
+    const checkoutFetch = await fetch("/api/v1/transaction/pay", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -188,7 +188,7 @@ async function executePayment(){
 }
 
 async function isUserAuth(){
-    const isAuth = await fetch("/api/is_authenticated");
+    const isAuth = await fetch("/api/v1/user/is_authenticated");
 
     return isAuth.json();
 }
@@ -220,7 +220,7 @@ function addQuantityListener(){
 }
 
 async function updateCartQuantity(cartId, quantity){
-    const response = await fetch("/api/update_cart", {
+    const response = await fetch("/api/v1/cart/update_cart", {
         method : "POST",
         headers: {
             "Content-Type" : "application/json"
@@ -240,7 +240,7 @@ async function updateCartQuantity(cartId, quantity){
 }
 
 async function deleteCart(cartId){
-    const response = await fetch("/api/delete_cart", {
+    const response = await fetch("/api/v1/cart/delete_cart", {
         method: "POST",
         headers: {
             "Content-Type" : "application/json"
