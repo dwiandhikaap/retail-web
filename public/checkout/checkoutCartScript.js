@@ -52,12 +52,6 @@ const cartDataMarkup = (
 `}
 
 async function getPromoDetails(priceTotal, promoCode){
-
-    console.log(({
-        code: promoCode,
-        totalSpent: parseInt(priceTotal)
-    }));
-
     const promoDetails = await fetch('/api/promo/details', {
         method: 'POST',
         headers : {
@@ -68,8 +62,6 @@ async function getPromoDetails(priceTotal, promoCode){
             totalSpent: parseInt(priceTotal)
         })
     }).then(data => data.json());
-
-    console.log(promoDetails);
 
     return promoDetails;
 }
@@ -215,7 +207,6 @@ function addQuantityListener(){
             const parsedQuantity = parseInt(evnt.target.value);
             if(isNaN(parsedQuantity) || parsedQuantity <= 0){
                 actualQuantityInput.value = "1";
-                console.log(actualQuantityInput.value);
             }
 
             const cartId = actualQuantityInput.dataset.cartid;
