@@ -6,7 +6,6 @@
     --header-color: #4C49E9;
     --body-bg-color: hsl(0, 0%, 93%);
     --footer-color: hsl(241, 28%, 14%);
-    --h1-color: hsla(241, 78%, 30%, 1);
     --p-color: hsla(0, 0%, 40%, 1);
     --p-color-footer-primary: hsl(0, 0%, 100%);
     --p-color-footer-secondary: hsl(0, 0%, 60%);
@@ -20,7 +19,6 @@ h1 {
     font-family: 'Roboto', sans-serif;
     font-style: normal;
     font-weight: 900;
-    color: var(--h1-color);
 }
 
 h2 {
