@@ -63,7 +63,7 @@ header{
     align-items: center;
     width: 100%;
     min-height: 4rem;
-    justify-content: space-evenly;
+    justify-content: space-around;
     margin: 0;
 }
 
