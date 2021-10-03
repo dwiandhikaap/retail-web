@@ -15,6 +15,7 @@ const loginRoute = require("./routes/login");
 const logoutRoute = require("./routes/logout");
 const productRoute = require("./routes/product");
 const checkoutRoute = require("./routes/checkout");
+const transaksiRoute = require("./routes/transaksi");
 const apiRoute = require("./routes/api");
 const globalRoute = require("./routes/global")
 
@@ -46,6 +47,7 @@ app.use("/login", loginRoute);
 app.use("/product", productRoute);
 app.use("/global", globalRoute);
 app.use("/checkout", checkoutRoute);
+app.use("/transaksi", transaksiRoute);
 app.use("/logout", logoutRoute);
 
 app.listen(5000, console.log("Server is running on http://localhost:5000"));
