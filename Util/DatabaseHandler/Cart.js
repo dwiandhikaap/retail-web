@@ -2,6 +2,7 @@ const { InvalidCartRequest, CartNotFound } = require("../CustomException");
 const { sqlQuery } = require("../DatabaseHandler");
 const { dbIsStockEnough, dbDecreaseBarangStock } = require("./Barang");
 const { applyPromoCode } = require("./Promo");
+const { dbCreateTransactionEvent, dbCreateTransactionData } = require("./Transaction");
 const { dbGetUserBalance, dbDecreaseUserBalance } = require("./User");
 
 async function dbGetCartById(cartId){
@@ -166,24 +167,32 @@ async function dbValidateCartTransaction(cartEntries, promoCode, userId){
         if(stock < barangJumlah){
             throw InvalidCartRequest("Stock is less than order quantity!");
         }
-        totalPrice += price*barangJumlah*(100-discount)/100;
+
+        const cart_price =  Math.floor(price*barangJumlah*(100-discount)/100);
+        cartEntry.cart_price = cart_price;
+        totalPrice += cart_price;
     }
 
     const discount = await applyPromoCode(totalPrice, promoCode);
-    totalPrice = (totalPrice*110/100)-discount;
+    finalPrice = Math.floor((totalPrice*110/100)-discount);
 
-    if(await dbGetUserBalance(userId) < totalPrice){
+    if(await dbGetUserBalance(userId) < finalPrice){
         throw InvalidCartRequest("Insufficient user balance!");
     };
 
+    // Everything is okay, execute payment
+    const transactionId = await dbCreateTransactionEvent(userId, totalPrice, discount, finalPrice);
+
     for(cartEntry of cartEntries){
         const {cartId, barangId, barangJumlah} = cartEntry;
-        
+        const {discount:barangDiscount} = selectedItemsObj[barangId];
+
         await dbDecreaseBarangStock(barangId, barangJumlah);
         await dbResolveCart(cartId);
+        await dbCreateTransactionData(transactionId, cartId, cartEntry.cart_price, barangDiscount);
     }
     
-    await dbDecreaseUserBalance(userId, totalPrice);
+    await dbDecreaseUserBalance(userId, finalPrice);
 }
 
 async function dbResolveCart(cartId){
