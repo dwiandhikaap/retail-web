@@ -1,5 +1,6 @@
 const { Router } = require("express");
 const { dbValidateCartEntries, dbRetrieveCartEntries, dbValidateCartTransaction } = require("../../../Util/DatabaseHandler/Cart");
+const { dbGetTransactionEventByPerson, dbGetTransactionData } = require("../../../Util/DatabaseHandler/Transaction");
 
 const router = Router()
 
@@ -49,5 +50,22 @@ router.post('/pay', async(req, res) => {
     return;
 })
 
+router.get('/get_transaction', async(req, res) => {
+    if(!req.session.isAuth){
+        res.status(401).send("User is not authenticated!");
+        return;
+    } 
+
+    const userId = req.session.user_id;
+
+    let transactionEvents = await dbGetTransactionEventByPerson(userId);
+    for await (transactionEvent of transactionEvents){
+        transactionEvent.data = await dbGetTransactionData(transactionEvent.transactionId);
+    }
+
+    res.send({
+        transactions: transactionEvents
+    })
+})
 
 module.exports = router;
