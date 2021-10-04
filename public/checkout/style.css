@@ -120,6 +120,7 @@
 
 #checkout-price-container {
     margin: -5px 0 0 auto;
+    height: min-content;
     padding: 1rem;
     justify-content: space-between;
     display: flex;
