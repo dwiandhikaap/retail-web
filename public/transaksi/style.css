@@ -1,5 +1,5 @@
 .page-content.transaksi-content {
-    width: 75vw;
+    padding-bottom: 4rem;
 }
 
 .transaksi-heading {
@@ -18,8 +18,11 @@
     grid-template-columns: 18rem auto;
 }
 
+/* ===================== */
+/* Side transaction list */
+/* ===================== */
 .transaksi-list-container {
-    padding: 0.5rem 1rem 0 0;
+    padding: 0rem 1rem 0 0;
     height: 29rem;
 
     overflow: scroll;
@@ -50,6 +53,8 @@
     border: 1px solid hsl(0,0%,75%);
 }
 
+
+
 .transaksi-list-item > * > span{
     font-family: 'Roboto', sans-serif;
     font-size: 12px;
@@ -70,7 +75,9 @@
     font-weight: 700;
 }
 
+.list-item-detail-button:focus,
 .list-item-detail-button:hover {
+    outline: none;
     background-color: #01004A;
     color: white;
 }
@@ -78,4 +85,156 @@
 .list-item-detail-button:active{
     outline: 1px solid white;
     outline-offset: -4px;
+}
+
+
+/* ================== */
+/* Transaction Detail */
+/* ================== */
+
+.transaksi-item-container {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 2rem;
+    border: 1px solid hsl(0, 0%, 75%);
+}
+
+.transaksi-item-container > *:nth-last-child(-n+2){
+    align-self: flex-end;
+}
+
+.transaksi-item-container > h2 {
+    font-size: 21px;
+    font-weight: bold;
+}
+
+.transaksi-info-details-top {
+    display: grid;
+    grid-template-columns: 7rem auto;
+    grid-template-rows: 1fr 1fr;
+    font-size: 12px;
+}
+
+.transaksi-info-details-top > *:nth-child(2n-1){
+    color: hsl(0, 0%, 75%);
+}
+
+/* Details body */
+
+.transaksi-info-details-body {
+    margin-top: 1rem;
+    padding: 0.5rem 0;
+    border-top: 2px solid hsl(0, 0%, 90%);
+    border-bottom: 1px solid black;
+}
+
+.details-body-labels {
+    width: 100%;
+    display: grid;
+    grid-template-columns: auto 10rem;
+    justify-items: center;
+    column-gap: 1rem;
+}
+
+/* Details body item */
+
+.details-item {
+    margin: 0.5rem 0;
+    display: grid;
+    grid-template-columns: 86px auto 10rem;
+    column-gap: 1rem;
+    align-items: center;
+
+    font-family: Helvetica, sans-serif;
+}
+
+.details-item > *:not(:first-child){
+    margin-right: 8px;
+}
+
+.details-item > *:last-child{
+    display: flex;
+    margin-right: 2rem;
+    padding: 12px 0px 8px 0px;
+    flex-direction: column;
+    align-self: stretch;
+    justify-content: space-between;
+}
+
+.details-item-item-details *{
+    color: black;
+    text-decoration: none;
+}
+
+.details-item-item-details .product-name{
+    max-width: 20ch;
+}
+
+.product-info-top .price-discount{
+    display: inline-block;
+    padding: 2px 6px;
+    background-color: #ff2f6e;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    max-width: 20ch;
+}
+
+.product-info-top .price-before{
+    font-size: 12px;
+    text-decoration: line-through;
+    color: hsl(0, 0%, 50%)
+}
+
+.product-info-bottom .price-after{
+    font-weight: bold;
+}
+
+.details-item-price-total {
+    text-align: right;
+    font-weight: bold;
+}
+
+/* Transkasi info price on bottom */
+
+.transaksi-info-details-price {
+    margin-top: 1rem;
+    display: grid;
+    width: 30rem;
+    grid-template-columns: auto 12rem;
+}
+
+.transaksi-info-details-price > * {
+    margin-bottom: 0.5rem;
+    font-size: 16px;
+    font-weight: bold;
+    font-family: Roboto, sans-serif;
+}
+
+.transaksi-info-details-price > *:nth-child(2n-1){
+    color: hsl(0, 0%, 75%);
+}
+
+.transaksi-info-details-price > *:nth-child(2n){
+    margin-left: auto;
+    margin-right: 2rem;
+}
+
+.details-grand-total {
+    display: grid;
+    width: 30rem;
+    grid-template-columns: auto 12rem;
+    color: hsl(0, 0%, 75%);
+}
+
+.details-grand-total > * {
+    font-size: 20px;
+    font-family: Roboto, sans-serif;
+    font-weight: bold;
+}
+
+.details-grand-total > *:last-child {
+    color: black;
+    text-align: right;
+    padding-right: 2rem;
 }
