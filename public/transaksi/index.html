@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>
+        async function onSiteLoad(){
+            await onHeaderLoad();
+        }
+    </script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../global/default.css">
+    <link rel="stylesheet" href="../global/notif.css">
+    <link rel="stylesheet" href="../global/lds-css/lds-roller.css">
+    <link rel="stylesheet" href="style.css">
+    <script src="../global/header.js"></script>
+    <script src="../global/notif.js"></script>
+    <title>Rajahost Cloud</title>
+
+    <template>
+        
+    </template>
+
+</head>
+<body onload="onSiteLoad()">
+    <header>
+        <a href="/">
+            <svg class="nav-logo" width="180" height="65" viewBox="0 0 259 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M36.9874 20.943V17.4303C33.4623 12.8925 31.0996 7.51727 30.2246 1.77947C29.9621 0.0918823 27.8495 -0.570652 26.7494 0.741916C24.1118 3.85458 22.0367 7.50477 20.6366 11.555C24.9118 16.3427 30.6371 19.6304 36.9874 20.943ZM50.9882 8.0423C45.4629 8.0423 40.9876 12.53 40.9876 18.0553V25.4807C27.937 24.7057 16.8614 16.6677 11.8611 5.26715C11.1736 3.70457 8.96099 3.61707 8.23595 5.15465C6.16084 9.54237 4.98578 14.4426 4.98578 19.6179C4.98578 28.4684 9.2485 36.7313 15.6238 42.8566C17.2739 44.4442 18.8865 45.7568 20.4866 46.9568L2.49815 51.4571C1.16058 51.7946 0.560551 53.3447 1.31059 54.5072C3.4857 57.8699 8.86098 63.5702 20.4616 64.0452C21.4616 64.0827 22.4617 63.7202 23.2242 63.0577L31.3746 56.0448H40.9876C52.0382 56.0448 60.9887 47.1068 60.9887 36.0563V16.0427L64.9889 8.0423H50.9882ZM50.9882 20.0554C49.8881 20.0554 48.9881 19.1554 48.9881 18.0553C48.9881 16.9553 49.8881 16.0552 50.9882 16.0552C52.0882 16.0552 52.9883 16.9553 52.9883 18.0553C52.9883 19.1554 52.0882 20.0554 50.9882 20.0554Z" fill="white"/>
+                <path d="M104.484 41.5099H100.357C97.557 45.2436 94.9532 46.7174 91.1704 46.7174C85.1277 46.7174 80.3623 41.9521 80.3623 36.0076C80.3623 29.9649 85.0294 25.2487 91.023 25.2487C95.0023 25.2487 98.2939 27.1647 100.357 30.7018H104.435C102.273 25.2978 97.1148 21.908 91.0721 21.908C83.0152 21.908 76.6777 28.0981 76.6777 35.9094C76.6777 43.9172 83.0643 50.0581 91.3178 50.0581C96.8692 50.0581 101.242 47.6509 104.484 41.5099Z" fill="white"/>
+                <path d="M136.882 49.4194V22.5467H133.246V27.312C130.593 23.5784 127.302 21.908 122.635 21.908C114.578 21.908 108.486 27.9998 108.486 36.0567C108.486 44.0645 114.627 50.0581 122.88 50.0581C127.449 50.0581 130.397 48.5351 133.246 44.7032V49.4194H136.882ZM133.246 35.8602C133.246 41.9521 128.726 46.7174 122.929 46.7174C116.838 46.7174 112.17 41.9521 112.17 35.8111C112.17 29.9649 116.887 25.2487 122.733 25.2487C128.628 25.2487 133.246 29.8667 133.246 35.8602Z" fill="white"/>
+                <path d="M166.831 49.4194V35.3198C166.831 25.8873 162.065 21.908 155.335 21.908C151.798 21.908 148.948 23.2836 146.688 26.0347V22.5467H143.053V49.4194H146.688V34.6321C146.688 28.049 150.029 25.2487 154.893 25.2487C159.855 25.2487 163.195 27.9998 163.195 35.3198V49.4194H166.831Z" fill="white"/>
+                <path d="M200.402 49.4194V22.5467H196.767V27.312C194.114 23.5784 190.822 21.908 186.155 21.908C178.098 21.908 172.006 27.9998 172.006 36.0567C172.006 44.0645 178.147 50.0581 186.401 50.0581C190.97 50.0581 193.917 48.5351 196.767 44.7032V49.4194H200.402ZM196.767 35.8602C196.767 41.9521 192.247 46.7174 186.45 46.7174C180.358 46.7174 175.691 41.9521 175.691 35.8111C175.691 29.9649 180.407 25.2487 186.253 25.2487C192.149 25.2487 196.767 29.8667 196.767 35.8602Z" fill="white"/>
+                <path d="M217.823 25.4943V21.908C213.942 22.1045 211.633 23.431 210.209 26.3786V22.5467H206.573V49.4194H210.209V33.7478C210.209 28.7367 212.763 25.9856 217.823 25.4943Z" fill="white"/>
+                <path d="M224.985 49.4194V22.5467H221.35V49.4194H224.985ZM224.985 19.599V13.4089H221.35V19.599H224.985Z" fill="white"/>
+                <path d="M258.549 49.4194V22.5467H254.914V27.312C252.261 23.5784 248.969 21.908 244.302 21.908C236.245 21.908 230.153 27.9998 230.153 36.0567C230.153 44.0645 236.294 50.0581 244.548 50.0581C249.117 50.0581 252.064 48.5351 254.914 44.7032V49.4194H258.549ZM254.914 35.8602C254.914 41.9521 250.394 46.7174 244.597 46.7174C238.505 46.7174 233.838 41.9521 233.838 35.8111C233.838 29.9649 238.554 25.2487 244.4 25.2487C250.296 25.2487 254.914 29.8667 254.914 35.8602Z" fill="white"/>
+                </svg>
+        </a>
+        <ul class="nav-bar">
+            <li class="nav-item">
+                <a href="#">Transaksi</a>
+            </li>
+            <li class="nav-item">
+                <a href="/checkout">Checkout</a>
+            </li>
+            <li class="nav-item">
+                <a onclick="cartMenuClick()">Cart</a>
+                <div class="header-menu-dropdown" id="cart-dropdown" style="opacity: 0;">
+                   <span>Loading...</span>
+                </div>
+            </li>
+            <li class="nav-item" id="nav-profile">
+                <a onclick="profileMenuClick()">Profil</a>
+                <div class="header-menu-dropdown" id="profile-dropdown" style="opacity: 0;">
+                    <span class="login-info">Anda belum login!</span>
+                    <span>
+                        <a class="user-profile-register" href="/register">Daftar</a>
+                        <a class="user-profile-login" href="/login">Login</a>
+                    </span>
+                </div>
+            </li>
+        </ul>          
+    </header>
+    <div id="notif-container"></div>
+
+    <div class="page-content transaksi-content">
+        <h1 class="transaksi-heading">
+            Transaksi
+        </h1>
+        <div class="transaksi-container">
+            <div class="transaksi-list-container">
+                <div class="transaksi-list-item">
+                    <div class="list-item-transaction">
+                        <span>No Transaksi</span>
+                        <br>
+                        <span>Transaction#0001</span>
+                    </div>
+                    <div class="list-item-total">
+                        <span>Total Transaksi</span>
+                        <br>
+                        <span>Rp 324.123,00</span>
+                    </div>
+                    <div class="list-item-waktu">
+                        <span>Waktu</span>
+                        <br>
+                        <span>4 Oktober 2021<br>21:16 WIB</span>
+                    </div>
+                    <div class="list-item-detail">
+                        <button class="list-item-detail-button">Lihat Detail</button>
+                    </div>
+                </div>
+                
+                <div class="transaksi-list-item">
+                    <div class="list-item-transaction">
+                        <span>No Transaksi</span>
+                        <br>
+                        <span>Transaction#0001</span>
+                    </div>
+                    <div class="list-item-total">
+                        <span>Total Transaksi</span>
+                        <br>
+                        <span>Rp 324.123,00</span>
+                    </div>
+                    <div class="list-item-waktu">
+                        <span>Waktu</span>
+                        <br>
+                        <span>4 Oktober 2021<br>21:16 WIB</span>
+                    </div>
+                    <div class="list-item-detail">
+                        <button class="list-item-detail-button">Lihat Detail</button>
+                    </div>
+                </div>
+
+                <div class="transaksi-list-item">
+                    <div class="list-item-transaction">
+                        <span>No Transaksi</span>
+                        <br>
+                        <span>Transaction#0001</span>
+                    </div>
+                    <div class="list-item-total">
+                        <span>Total Transaksi</span>
+                        <br>
+                        <span>Rp 324.123,00</span>
+                    </div>
+                    <div class="list-item-waktu">
+                        <span>Waktu</span>
+                        <br>
+                        <span>4 Oktober 2021<br>21:16 WIB</span>
+                    </div>
+                    <div class="list-item-detail">
+                        <button class="list-item-detail-button">Lihat Detail</button>
+                    </div>
+                </div>
+            </div>
+            <div class="transaksi-item-container">
+                asdasa
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-container">
+            <div class="footer-box-1">
+                <a href="/">
+                    <svg class="nav-logo" width="180" height="65" viewBox="0 0 259 65" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M36.9874 20.943V17.4303C33.4623 12.8925 31.0996 7.51727 30.2246 1.77947C29.9621 0.0918823 27.8495 -0.570652 26.7494 0.741916C24.1118 3.85458 22.0367 7.50477 20.6366 11.555C24.9118 16.3427 30.6371 19.6304 36.9874 20.943ZM50.9882 8.0423C45.4629 8.0423 40.9876 12.53 40.9876 18.0553V25.4807C27.937 24.7057 16.8614 16.6677 11.8611 5.26715C11.1736 3.70457 8.96099 3.61707 8.23595 5.15465C6.16084 9.54237 4.98578 14.4426 4.98578 19.6179C4.98578 28.4684 9.2485 36.7313 15.6238 42.8566C17.2739 44.4442 18.8865 45.7568 20.4866 46.9568L2.49815 51.4571C1.16058 51.7946 0.560551 53.3447 1.31059 54.5072C3.4857 57.8699 8.86098 63.5702 20.4616 64.0452C21.4616 64.0827 22.4617 63.7202 23.2242 63.0577L31.3746 56.0448H40.9876C52.0382 56.0448 60.9887 47.1068 60.9887 36.0563V16.0427L64.9889 8.0423H50.9882ZM50.9882 20.0554C49.8881 20.0554 48.9881 19.1554 48.9881 18.0553C48.9881 16.9553 49.8881 16.0552 50.9882 16.0552C52.0882 16.0552 52.9883 16.9553 52.9883 18.0553C52.9883 19.1554 52.0882 20.0554 50.9882 20.0554Z" fill="white"/>
+                        <path d="M104.484 41.5099H100.357C97.557 45.2436 94.9532 46.7174 91.1704 46.7174C85.1277 46.7174 80.3623 41.9521 80.3623 36.0076C80.3623 29.9649 85.0294 25.2487 91.023 25.2487C95.0023 25.2487 98.2939 27.1647 100.357 30.7018H104.435C102.273 25.2978 97.1148 21.908 91.0721 21.908C83.0152 21.908 76.6777 28.0981 76.6777 35.9094C76.6777 43.9172 83.0643 50.0581 91.3178 50.0581C96.8692 50.0581 101.242 47.6509 104.484 41.5099Z" fill="white"/>
+                        <path d="M136.882 49.4194V22.5467H133.246V27.312C130.593 23.5784 127.302 21.908 122.635 21.908C114.578 21.908 108.486 27.9998 108.486 36.0567C108.486 44.0645 114.627 50.0581 122.88 50.0581C127.449 50.0581 130.397 48.5351 133.246 44.7032V49.4194H136.882ZM133.246 35.8602C133.246 41.9521 128.726 46.7174 122.929 46.7174C116.838 46.7174 112.17 41.9521 112.17 35.8111C112.17 29.9649 116.887 25.2487 122.733 25.2487C128.628 25.2487 133.246 29.8667 133.246 35.8602Z" fill="white"/>
+                        <path d="M166.831 49.4194V35.3198C166.831 25.8873 162.065 21.908 155.335 21.908C151.798 21.908 148.948 23.2836 146.688 26.0347V22.5467H143.053V49.4194H146.688V34.6321C146.688 28.049 150.029 25.2487 154.893 25.2487C159.855 25.2487 163.195 27.9998 163.195 35.3198V49.4194H166.831Z" fill="white"/>
+                        <path d="M200.402 49.4194V22.5467H196.767V27.312C194.114 23.5784 190.822 21.908 186.155 21.908C178.098 21.908 172.006 27.9998 172.006 36.0567C172.006 44.0645 178.147 50.0581 186.401 50.0581C190.97 50.0581 193.917 48.5351 196.767 44.7032V49.4194H200.402ZM196.767 35.8602C196.767 41.9521 192.247 46.7174 186.45 46.7174C180.358 46.7174 175.691 41.9521 175.691 35.8111C175.691 29.9649 180.407 25.2487 186.253 25.2487C192.149 25.2487 196.767 29.8667 196.767 35.8602Z" fill="white"/>
+                        <path d="M217.823 25.4943V21.908C213.942 22.1045 211.633 23.431 210.209 26.3786V22.5467H206.573V49.4194H210.209V33.7478C210.209 28.7367 212.763 25.9856 217.823 25.4943Z" fill="white"/>
+                        <path d="M224.985 49.4194V22.5467H221.35V49.4194H224.985ZM224.985 19.599V13.4089H221.35V19.599H224.985Z" fill="white"/>
+                        <path d="M258.549 49.4194V22.5467H254.914V27.312C252.261 23.5784 248.969 21.908 244.302 21.908C236.245 21.908 230.153 27.9998 230.153 36.0567C230.153 44.0645 236.294 50.0581 244.548 50.0581C249.117 50.0581 252.064 48.5351 254.914 44.7032V49.4194H258.549ZM254.914 35.8602C254.914 41.9521 250.394 46.7174 244.597 46.7174C238.505 46.7174 233.838 41.9521 233.838 35.8111C233.838 29.9649 238.554 25.2487 244.4 25.2487C250.296 25.2487 254.914 29.8667 254.914 35.8602Z" fill="white"/>
+                    </svg>
+                </a>
+                <p>Toko pakan dan obat-obatan kenari terbaik di Indonesia.</p>
+                <br>
+                
+            
+            </div>
+            <div class="footer-box-2">
+                <div class="footer-box-2-container">
+                    <div class="footer-box-2-div">
+                        <h3>Products</h3>
+                        <ul>
+                            <li>
+                                <a href="#">Pakan Harian</a>
+                            </li>
+                            <li>
+                                <a href="#">Vitamin</a>
+                            </li>
+                            <li>
+                                <a href="#">Obat-obatan</a>
+                            </li>
+                            <li>
+                                <a href="#">Aksesoris</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="footer-box-2-div">
+                        <h3>Address</h3>
+                        <p>3915 Howard Street
+                        <br>Grand Rapids
+                        <br>Michigan 49503<p>
+                    </div>
+                    <div class="footer-box-2-div">
+                        <h3>Support</h3>
+                            <p>Phone : 123-456-789
+                            <br>Email : support@canaria.com</p>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-box-3">
+                <h3>Lorem, ipsum.</h3>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit magni repudiandae consequuntur saepe nobis sunt assumenda iure libero nam quidem?</p>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, ab.</p>
+            </div>
+        </div>
+    </footer>
+    
+</body>
+</html>
