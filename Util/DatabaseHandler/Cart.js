@@ -185,11 +185,11 @@ async function dbValidateCartTransaction(cartEntries, promoCode, userId){
 
     for(cartEntry of cartEntries){
         const {cartId, barangId, barangJumlah} = cartEntry;
-        const {discount:barangDiscount} = selectedItemsObj[barangId];
+        const {discount:barangDiscount, price} = selectedItemsObj[barangId];
 
         await dbDecreaseBarangStock(barangId, barangJumlah);
         await dbResolveCart(cartId);
-        await dbCreateTransactionData(transactionId, cartId, cartEntry.cart_price, barangDiscount);
+        await dbCreateTransactionData(transactionId, cartId, price, cartEntry.cart_price, barangDiscount);
     }
     
     await dbDecreaseUserBalance(userId, finalPrice);
