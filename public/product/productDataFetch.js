@@ -50,12 +50,14 @@ async function showProduct(){
     const itemThumbnailNode = document.importNode(itemThumbnail, true);
     const itemDetailsNode = document.importNode(itemDetails, true);
 
+    const finalPrice = Math.floor(price*(100-discount)/100);
+
     itemDetailsNode.querySelector("#item-name").textContent = product_name;
-    itemDetailsNode.querySelector("#item-price-container").querySelector("#item-price").textContent = moneyFormat(price*(100-discount)/100);
+    itemDetailsNode.querySelector("#item-price-container").querySelector("#item-price").textContent = moneyFormat(finalPrice);
     itemDetailsNode.querySelector("#item-description").textContent = description;
     itemDetailsNode.querySelector("#item-stock").textContent = `Tersisa ${stock} barang!`;
     itemDetailsNode.querySelector("#item-sold").textContent = `${sold} Terjual`;
-    itemDetailsNode.querySelector("#total-price").textContent = moneyFormat(price);
+    itemDetailsNode.querySelector("#total-price").textContent = moneyFormat(finalPrice);
 
     if(discount > 0){
         const itemPriceBefore = document.createElement('span');
@@ -75,7 +77,7 @@ async function showProduct(){
     container.appendChild(itemThumbnailNode);
     container.appendChild(itemDetailsNode); 
 
-    addPriceListener(price, stock)
+    addPriceListener(finalPrice, stock)
 }
 
 async function submitCart(){
