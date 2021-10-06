@@ -21,7 +21,7 @@
 /* ===================== */
 /* Side transaction list */
 /* ===================== */
-.transaksi-list-container {
+#transaksi-list-container {
     padding: 0rem 1rem 0 0;
     height: 29rem;
 
@@ -29,12 +29,12 @@
     overflow-x: hidden;
 }
 
-.transaksi-list-container::-webkit-scrollbar {
+#transaksi-list-container::-webkit-scrollbar {
     width: 12px;
     background-color: transparent;
 }
 
-.transaksi-list-container::-webkit-scrollbar-thumb{
+#transaksi-list-container::-webkit-scrollbar-thumb{
     border-radius: 12px;
     background-color: hsl(0, 0%, 90%);
 }
@@ -92,18 +92,18 @@
 /* Transaction Detail */
 /* ================== */
 
-.transaksi-item-container {
+#transaksi-item-container {
     display: flex;
     flex-direction: column;
     padding: 1rem 2rem;
     border: 1px solid hsl(0, 0%, 75%);
 }
 
-.transaksi-item-container > *:nth-last-child(-n+2){
+#transaksi-item-container > *:nth-last-child(-n+2){
     align-self: flex-end;
 }
 
-.transaksi-item-container > h2 {
+#transaksi-item-container > h2 {
     font-size: 21px;
     font-weight: bold;
 }
@@ -134,11 +134,12 @@
     grid-template-columns: auto 10rem;
     justify-items: center;
     column-gap: 1rem;
+    color: hsl(0, 0%, 75%);
 }
 
 /* Details body item */
 
-.details-item {
+.transaction-product {
     margin: 0.5rem 0;
     display: grid;
     grid-template-columns: 86px auto 10rem;
@@ -148,11 +149,11 @@
     font-family: Helvetica, sans-serif;
 }
 
-.details-item > *:not(:first-child){
+.transaction-product > *:not(:first-child){
     margin-right: 8px;
 }
 
-.details-item > *:last-child{
+.transaction-product > *:last-child{
     display: flex;
     margin-right: 2rem;
     padding: 12px 0px 8px 0px;
@@ -161,12 +162,12 @@
     justify-content: space-between;
 }
 
-.details-item-item-details *{
+.transaction-product-item-details *{
     color: black;
     text-decoration: none;
 }
 
-.details-item-item-details .product-name{
+.transaction-product-item-details .product-name{
     max-width: 20ch;
 }
 
@@ -190,7 +191,7 @@
     font-weight: bold;
 }
 
-.details-item-price-total {
+.transaction-product-price-total {
     text-align: right;
     font-weight: bold;
 }
@@ -221,6 +222,8 @@
 }
 
 .details-grand-total {
+    border-top: 1px dashed hsl(0, 0%, 50%);
+    padding-top: 1rem;
     display: grid;
     width: 30rem;
     grid-template-columns: auto 12rem;

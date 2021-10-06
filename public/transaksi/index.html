@@ -4,6 +4,7 @@
     <script>
         async function onSiteLoad(){
             await onHeaderLoad();
+            await getTransactions();
         }
     </script>
     <meta charset="UTF-8">
@@ -15,6 +16,7 @@
     <link rel="stylesheet" href="style.css">
     <script src="../global/header.js"></script>
     <script src="../global/notif.js"></script>
+    <script src="transactionScript.js"></script>
     <title>Rajahost Cloud</title>
 
     <template>
@@ -68,213 +70,11 @@
             Transaksi
         </h1>
         <div class="transaksi-container">
-            <div class="transaksi-list-container">
-                <div class="transaksi-list-item">
-                    <div class="list-item-transaction">
-                        <span>No Transaksi</span>
-                        <br>
-                        <span>Transaction#0001</span>
-                    </div>
-                    <div class="list-item-total">
-                        <span>Total Transaksi</span>
-                        <br>
-                        <span>Rp 324.123,00</span>
-                    </div>
-                    <div class="list-item-waktu">
-                        <span>Waktu</span>
-                        <br>
-                        <span>4 Oktober 2021<br>21:16 WIB</span>
-                    </div>
-                    <div class="list-item-detail">
-                        <button class="list-item-detail-button">Lihat Detail</button>
-                    </div>
-                </div>
+            <div id="transaksi-list-container">
                 
-                <div class="transaksi-list-item">
-                    <div class="list-item-transaction">
-                        <span>No Transaksi</span>
-                        <br>
-                        <span>Transaction#0001</span>
-                    </div>
-                    <div class="list-item-total">
-                        <span>Total Transaksi</span>
-                        <br>
-                        <span>Rp 324.123,00</span>
-                    </div>
-                    <div class="list-item-waktu">
-                        <span>Waktu</span>
-                        <br>
-                        <span>4 Oktober 2021<br>21:16 WIB</span>
-                    </div>
-                    <div class="list-item-detail">
-                        <button class="list-item-detail-button">Lihat Detail</button>
-                    </div>
-                </div>
-
-                <div class="transaksi-list-item">
-                    <div class="list-item-transaction">
-                        <span>No Transaksi</span>
-                        <br>
-                        <span>Transaction#0001</span>
-                    </div>
-                    <div class="list-item-total">
-                        <span>Total Transaksi</span>
-                        <br>
-                        <span>Rp 324.123,00</span>
-                    </div>
-                    <div class="list-item-waktu">
-                        <span>Waktu</span>
-                        <br>
-                        <span>4 Oktober 2021<br>21:16 WIB</span>
-                    </div>
-                    <div class="list-item-detail">
-                        <button class="list-item-detail-button">Lihat Detail</button>
-                    </div>
-                </div>
-
-                <div class="transaksi-list-item">
-                    <div class="list-item-transaction">
-                        <span>No Transaksi</span>
-                        <br>
-                        <span>Transaction#0001</span>
-                    </div>
-                    <div class="list-item-total">
-                        <span>Total Transaksi</span>
-                        <br>
-                        <span>Rp 324.123,00</span>
-                    </div>
-                    <div class="list-item-waktu">
-                        <span>Waktu</span>
-                        <br>
-                        <span>4 Oktober 2021<br>21:16 WIB</span>
-                    </div>
-                    <div class="list-item-detail">
-                        <button class="list-item-detail-button">Lihat Detail</button>
-                    </div>
-                </div>
             </div>
-            <div class="transaksi-item-container">
-                <h2>Transaction#0001</h2>
-                <div class="transaksi-info-details-top">
-                    <span>Waktu Transaksi</span>
-                    <span>5 Oktober 2021, 16:23 WIB</span>
-                    <span>Atas Nama</span>
-                    <span>Mordred Pendragon</span>
-                </div>
-                <div class="transaksi-info-details-body">
-                    <div class="details-body-labels">
-                        <span>Product</span>
-                        <span>Total</span>
-                    </div>
-                    <div class="details-body-items">
-                        <div class="details-item">
-                            <div class="details-item-thumbnail">
-                                <img src="https://loremflickr.com/86/86" width="86" height="86">
-                            </div>
-                            <div class="details-item-item-details">
-                                <div class="product-name">
-                                    <a href="../product/?id=2">Calypso - Strawberry Lemonade</a>
-                                </div>
-                                <span class="product-info-top">
-                                    
-                                    <span class="price-discount">
-                                        -69%
-                                    </span>
-                                    <span class="price-before">
-                                        Rp 8.929,00
-                                    </span>
-                                    <br>
-                                
-                                </span>
-                                <span class="product-info-bottom">
-                                    <span class="price-after">
-                                        Rp 2.767,99
-                                    </span>
-                                    x 12
-                                </span>
-                            </div>
-                            <div class="details-item-price-total">
-                                Rp 2.767,99
-                            </div>
-                        </div>
-                        <div class="details-item">
-                            <div class="details-item-thumbnail">
-                                <img src="https://loremflickr.com/86/86" width="86" height="86">
-                            </div>
-                            <div class="details-item-item-details">
-                                <div class="product-name">
-                                    <a href="../product/?id=2">Calypso - Strawberry Lemonade</a>
-                                </div>
-                                <span class="product-info-top">
-                                    
-                                    <span class="price-discount">
-                                        -69%
-                                    </span>
-                                    <span class="price-before">
-                                        Rp 8.929,00
-                                    </span>
-                                    <br>
-                                
-                                </span>
-                                <span class="product-info-bottom">
-                                    <span class="price-after">
-                                        Rp 2.767,99
-                                    </span>
-                                    x 12
-                                </span>
-                            </div>
-                            <div>
-                                <div class="details-item-price-total">
-                                    Rp 2.767,99
-                                </div>
-                            </div>
-                        </div>
-                        <div class="details-item">
-                            <div class="details-item-thumbnail">
-                                <img src="https://loremflickr.com/86/86" width="86" height="86">
-                            </div>
-                            <div class="details-item-item-details">
-                                <div class="product-name">
-                                    <a href="../product/?id=2">Calypso - Strawberry Lemonade</a>
-                                </div>
-                                <span class="product-info-top">
-                                    
-                                    <span class="price-discount">
-                                        -69%
-                                    </span>
-                                    <span class="price-before">
-                                        Rp 8.929,00
-                                    </span>
-                                    <br>
-                                
-                                </span>
-                                <span class="product-info-bottom">
-                                    <span class="price-after">
-                                        Rp 2.767,99
-                                    </span>
-                                    x 12
-                                </span>
-                            </div>
-                            <div>
-                                <div class="details-item-price-total">
-                                    Rp 2.767,99
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="transaksi-info-details-price">
-                    <span>Sub Total</span>
-                    <span>Rp 923.123,00</span>
-                    <span>Tax 10%</span>
-                    <span>Rp 92.312,30</span>
-                    <span>Promo Code</span>
-                    <span>- Rp 0,00</span>
-                </div>
-                <div class="details-grand-total">
-                    <span>Grand Total</span>
-                    <span>Rp 1.293.126,00</span>
-                </div>
+            <div id="transaksi-item-container">
+                
             </div>
         </div>
     </div>
