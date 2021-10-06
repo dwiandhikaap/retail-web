@@ -145,7 +145,7 @@ async function dbValidateCartTransaction(cartEntries, promoCode, userId){
     const barangIds = cartEntries.map(cartEntry => cartEntry.barangId)
     const queryString = `
         -- @BLOCK
-        SELECT id,price,stock,discount FROM barang
+        SELECT id,price,stock,discount,product_name FROM barang
         WHERE id in (${barangIds.toString()})
     `
     const selectedItems = (await sqlQuery(queryString))[0];
@@ -185,11 +185,11 @@ async function dbValidateCartTransaction(cartEntries, promoCode, userId){
 
     for(cartEntry of cartEntries){
         const {cartId, barangId, barangJumlah} = cartEntry;
-        const {discount:barangDiscount, price} = selectedItemsObj[barangId];
+        const {discount:barangDiscount, price, product_name} = selectedItemsObj[barangId];
 
         await dbDecreaseBarangStock(barangId, barangJumlah);
         await dbResolveCart(cartId);
-        await dbCreateTransactionData(transactionId, cartId, price, cartEntry.cart_price, barangDiscount);
+        await dbCreateTransactionData(transactionId, cartId, product_name, price, cartEntry.cart_price, barangDiscount);
     }
     
     await dbDecreaseUserBalance(userId, finalPrice);

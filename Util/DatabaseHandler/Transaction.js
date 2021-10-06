@@ -10,11 +10,11 @@ async function dbCreateTransactionEvent(personId, total_price, promo, final_pric
     return (await sqlQuery(queryString))[0].insertId;
 }
 
-async function dbCreateTransactionData(transactionId, cartId, item_price, cart_price, discount){
+async function dbCreateTransactionData(transactionId, cartId, product_name, item_price, cart_price, discount){
     const queryString = `
-        INSERT INTO \`transaction_data\` (transactionId, cartId, item_price, cart_price, discount)
+        INSERT INTO \`transaction_data\` (transactionId, cartId, product_name, item_price, cart_price, discount)
 
-        VALUES("${transactionId}", "${cartId}", ${item_price}, "${cart_price}", "${discount}");
+        VALUES("${transactionId}", "${cartId}", "${product_name}", ${item_price}, "${cart_price}", "${discount}");
     `
 
     await sqlQuery(queryString);
@@ -22,9 +22,12 @@ async function dbCreateTransactionData(transactionId, cartId, item_price, cart_p
 
 async function dbGetTransactionEventByPerson(personId){
     const queryString = `
-        SELECT * FROM transaction_event
+        SELECT transaction_event.transactionId, transaction_event.total_price, transaction_event.promo, transaction_event.final_price, transaction_event.transaction_date, person.name FROM transaction_event
+        LEFT JOIN person
+        ON person.id = transaction_event.personId
 
-        WHERE personId=${personId};
+        WHERE personId=${personId}
+        ORDER BY transactionId DESC;
     `
 
     return (await sqlQuery(queryString))[0];
@@ -32,7 +35,7 @@ async function dbGetTransactionEventByPerson(personId){
 
 async function dbGetTransactionData(transactionId){
     const queryString = `
-        SELECT transaction_data.cartId, transaction_data.item_price, transaction_data.cart_price, transaction_data.discount , cart_data.barangId, cart_data.barangJumlah
+        SELECT transaction_data.cartId, transaction_data.product_name, transaction_data.item_price, transaction_data.cart_price, transaction_data.discount , cart_data.barangId, cart_data.barangJumlah
         FROM transaction_data
         LEFT JOIN cart_data
         ON cart_data.cartId = transaction_data.cartId
