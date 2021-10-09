@@ -113,15 +113,19 @@ async function updateCheckoutPrice(){
     let priceTotal = 0.0;
     for(cartDiv of cartDivs){
         const checkbox = cartDiv.querySelector(".checkout-cart-checkbox");
+        const itemPriceStr = cartDiv.querySelector(".price-after").textContent;
+        const itemPrice = parseFloat(itemPriceStr.replace(/\D+/g, ""))/100;
+        const itemQuantity = parseInt(cartDiv.querySelector(".item-quantity").value);
+        const cartTotal = itemPrice*itemQuantity;
+        cartDiv.querySelector(".checkout-cart-price-total").textContent = moneyFormat(cartTotal);
         if(checkbox.checked){
-            const priceStr = cartDiv.querySelector(".checkout-cart-price-total").textContent;
-            priceTotal += parseFloat(priceStr.replace(/\D+/g, ""))/100;
+            priceTotal += cartTotal;
+
             document.getElementById("checkout-pay-button").disabled = false;
         }
     }
     
     const tax = priceTotal/10;
-    
     const priceTotalSpan = document.getElementById('price-total-value');
     const priceTaxSpan = document.getElementById('price-tax-value');
     const priceGrandTotalSpan = document.getElementById('price-grand-total-value');
@@ -204,7 +208,6 @@ function addQuantityListener(){
 
         const actualQuantityInput = document.getElementById(quantityId);
         actualQuantityInput.addEventListener('change', async(evnt) => {
-            actualQuantityInput.disabled = true;
             const parsedQuantity = parseInt(evnt.target.value);
             if(isNaN(parsedQuantity) || parsedQuantity <= 0){
                 actualQuantityInput.value = "1";
@@ -237,7 +240,8 @@ async function updateCartQuantity(cartId, quantity){
         return;
     }
 
-    await getCartData();
+    console.log(response.status);
+    await updateCheckoutPrice();
 }
 
 async function deleteCart(cartId){
