@@ -41,7 +41,7 @@ const transactionListItemMarkup = (transaction, index) => {
 const transactionProductsMarkup = (transactionData) => {
     let markupResult = '';
     for(cart of transactionData){
-        const {barangId, barangJumlah, product_name, cartId, cart_price, discount, item_price:price} = cart;
+        const {barangId, barangJumlah, product_name, cart_price, discount, item_price:price} = cart;
 
         const discountMarkup = () => {
             if(discount > 0){
@@ -89,7 +89,6 @@ const transactionProductsMarkup = (transactionData) => {
     return markupResult;
 }
 
-/* TODO: bikin markup utk transaction infonya */
 const transactionInfoMarkup = (transaction) => {
     console.log(transaction);
 
@@ -144,6 +143,17 @@ async function getTransactions(){
 
 async function insertTransactionsOnList(){
     const transactionLength = Object.keys(transactions).length;
+
+    if(transactionLength == 0){
+        const noTransactionSVG = document.createElement("img");
+        noTransactionSVG.setAttribute("src", "/global/res/no_transaction.svg");
+
+        document.getElementById("transaksi-item-container").remove();
+        document.getElementById("transaksi-container").style.gridTemplateColumns = 'auto';
+        document.getElementById("transaksi-list-container").appendChild(noTransactionSVG);
+        return;
+    }
+
     for(let i = 0; i < transactionLength; i++){
         const listContainer = document.getElementById('transaksi-list-container');
         const itemDiv = document.createElement('div');
