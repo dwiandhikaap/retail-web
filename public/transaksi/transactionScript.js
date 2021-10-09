@@ -129,6 +129,11 @@ const transactionInfoMarkup = (transaction) => {
 }
 
 async function getTransactions(){
+    if(!await isUserAuth()){
+        window.location.replace("http://127.0.0.1:5000/login");
+        return;
+    }
+
     const res = await fetch('/api/v1/transaction/get_transaction');
 
     if(res.status != 200){

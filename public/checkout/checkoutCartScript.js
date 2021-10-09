@@ -68,6 +68,7 @@ async function getPromoDetails(priceTotal, promoCode){
 
 async function getCartData(){
     if(!await isUserAuth()){
+        window.location.replace("http://127.0.0.1:5000/login");
         return;
     }
 
