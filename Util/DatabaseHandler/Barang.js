@@ -19,7 +19,18 @@ async function dbDecreaseBarangStock(barangId, decrement){
     await sqlQuery(queryString);
 }
 
+async function dbIncreaseBarangSold(barangId, increment){
+    const queryString = `
+        UPDATE barang
+        set sold = sold+${increment}
+        where id="${barangId}";
+    `
+
+    await sqlQuery(queryString);
+}
+
 module.exports = {
     dbDecreaseBarangStock : dbDecreaseBarangStock,
-    dbIsStockEnough : dbIsStockEnough
+    dbIsStockEnough : dbIsStockEnough,
+    dbIncreaseBarangSold: dbIncreaseBarangSold
 }
