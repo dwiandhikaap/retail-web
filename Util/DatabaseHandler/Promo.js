@@ -1,16 +1,6 @@
 const { RejectedPromoCode, InvalidPromoData } = require("../CustomException");
 const { sqlQuery } = require("../DatabaseHandler");
-
-/* 
-    A.S.U
-
-    A   - Anti
-    S   - Sus
-    U   - Utility
-*/
-function isStringSus(string){
-    return !(string.match("^[A-Za-z0-9]+$"))
-}
+const { isStringSus } = require("../Utility");
 
 async function createPromoCode(promoData){
     const {code:_code, type:_type, value:_value, quota:_quota, min_spent: _min_spent, active:_active} = promoData;
