@@ -46,13 +46,6 @@ async function dbGetBarangAvailablePage(category){
 async function dbGetBarangList(category, sortMode, page){
     const availablePage = await dbGetBarangAvailablePage(category);
 
-    if(page > availablePage){
-        return {
-            availablePage: availablePage,
-            items: {}
-        }
-    }
-
     let queryString = `
         SELECT * from barang
         WHERE stock > 0
@@ -80,7 +73,7 @@ async function dbGetBarangList(category, sortMode, page){
     queryString += ` LIMIT 10`;
     
     if(page){
-        const offset = clamp(page-1, 0, 99)*10;
+        const offset = clamp(page-1, 0, availablePage-1)*10;
         queryString += ` OFFSET ${offset}`;
     }
 
