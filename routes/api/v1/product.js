@@ -1,5 +1,6 @@
 const { Router } = require("express");
-const { dbGetData, dbGetBarangList } = require("../../../Util/DatabaseHandler/Barang");
+const { dbGetData } = require("../../../Util/DatabaseHandler");
+const { dbGetBarangList, dbGetBarang } = require("../../../Util/DatabaseHandler/Barang");
 const { isRequestQueryValid } = require("../../../Util/Utility");
 
 const router = Router()
@@ -38,7 +39,7 @@ router.get("/product_data", async(req, res) => {
     }
 
     res.send(
-        await dbGetData("barang", productId)
+        await dbGetBarang(productId)
     )
 })
 

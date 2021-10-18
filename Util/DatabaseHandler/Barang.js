@@ -9,6 +9,15 @@ async function dbIsStockEnough(productId, quantity){
     return (await sqlQuery(queryString))[0][0].stock >= quantity;
 }
 
+async function dbGetBarang(productId){
+    const queryString = `
+    SELECT * FROM barang
+
+    WHERE id="${productId}";
+    `
+    return (await sqlQuery(queryString))[0];
+}
+
 async function dbDecreaseBarangStock(barangId, decrement){
     const queryString = `
         UPDATE barang
@@ -88,6 +97,7 @@ async function dbGetBarangList(category, sortMode, page){
 }
 
 module.exports = {
+    dbGetBarang: dbGetBarang,
     dbDecreaseBarangStock : dbDecreaseBarangStock,
     dbIsStockEnough : dbIsStockEnough,
     dbIncreaseBarangSold: dbIncreaseBarangSold,
