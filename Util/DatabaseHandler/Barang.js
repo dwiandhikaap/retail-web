@@ -96,10 +96,19 @@ async function dbGetBarangList(category, sortMode, page){
     }
 }
 
+async function dbGetCategoryList(){
+    const queryString = `
+        SELECT DISTINCT category from barang;
+    `
+
+    return (await sqlQuery(queryString))[0];
+}
+
 module.exports = {
     dbGetBarang: dbGetBarang,
     dbDecreaseBarangStock : dbDecreaseBarangStock,
     dbIsStockEnough : dbIsStockEnough,
     dbIncreaseBarangSold: dbIncreaseBarangSold,
-    dbGetBarangList: dbGetBarangList
+    dbGetBarangList: dbGetBarangList,
+    dbGetCategoryList: dbGetCategoryList
 }
