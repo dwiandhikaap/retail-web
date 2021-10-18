@@ -91,6 +91,57 @@ async function menuFetch(){
         .then(data => updateList(data))
 }
 
+async function generateItemFilter(){
+    const categoryList = await fetch('/api/v1/product/get_category_list', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(res => res.json());
+
+    const categorySelection = document.getElementById("select-category");
+    const sortSelection = document.getElementById("select-sort");
+
+    for(const category of categoryList){
+        const categoryOption = document.createElement("option");
+        categoryOption.text = category;
+
+        categorySelection.appendChild(categoryOption);
+    }
+
+    const URLParams = getURLParams();
+    categorySelection.value = URLParams.category || 'Semua';
+    sortSelection.value = URLParams.sort || 'random'
+
+    categorySelection.addEventListener('change', () => {
+        const category = categorySelection.value;
+        if(category == 'Semua'){
+            URLParams.category = '';
+        }
+        else{
+            URLParams.category = category;
+        }
+
+        URLParams.page = '';
+        const apiQueryString = generateQueryString(URLParams);
+
+        window.location.href = "/" + apiQueryString;
+    })
+
+    sortSelection.addEventListener('change', () => {
+        const sortMode = sortSelection.value;
+        if(sortMode == 'random'){
+            URLParams.sort = '';
+        }
+        else{
+            URLParams.sort = sortMode;
+        }
+
+        const apiQueryString = generateQueryString(URLParams);
+        window.location.href = "/" + apiQueryString;
+    })
+}
+
 function updateList(data){
     const {availablePage, items} = data;
 

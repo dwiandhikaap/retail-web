@@ -3,6 +3,7 @@
 <head>
     <script>
         async function onSiteLoad(){
+            await generateItemFilter();
             await onHeaderLoad();
             await menuFetch();
         }
@@ -18,7 +19,7 @@
 
     <template>
         <div class="shop-item">
-            <img class="shop-item-img" src="" alt="image of product">
+            <img class="shop-item-img" src="https://loremflickr.com/144/144" width="144" height="144" alt="image of product">
             <a href="#" class="shop-item-name"></a>
             <span class="shop-item-price"></span>
             <span class="shop-item-stock"></span>
@@ -65,9 +66,29 @@
         </ul>          
     </header>
     
-    <div class="page-content">
-        <div id="shop-item-list"></div>
-        <div id="page-navigation"></div>
+    <!-- TODO: hubungin frontend filter pake javascript -->
+    <div class="page-content page-index">
+        <div id="shop-item-filter">
+            <h2>Filter</h2>
+            <div id="filter-category">
+                <h3>Category</h3>
+                <select name="select-category" id="select-category">
+                    <option>Semua</option>
+                </select>
+            </div>
+            <div id="filter-sort">
+                <h3>Urutkan Berdasarkan</h3>
+                <select name="select-sort" id="select-sort">
+                    <option value="random">Acak</option>
+                    <option value="price_low">Harga Termurah</option>
+                    <option value="price_high">Harga Termahal</option>
+                </select>
+            </div>
+        </div>
+        <div>
+            <div id="shop-item-list"></div>
+            <div id="page-navigation"></div>
+        </div>
     </div>
     
     <footer>
@@ -129,6 +150,5 @@
             </div>
         </div>
     </footer>
-    
 </body>
 </html>

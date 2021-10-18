@@ -1,14 +1,40 @@
+.page-content.page-index {
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 4rem;
+}
+
+#shop-item-filter {
+    width: 8rem;
+    min-width: 5rem;
+    margin: 16px;
+    padding: 0.5rem 1rem;
+    align-self: flex-start;
+    border-right: 1px solid hsla(0, 0%, 0%, 0.25);
+}
+
+#shop-item-filter h2 {
+    font-size: 32px;
+    margin: 0 0 1rem 0;
+}
+
+#shop-item-filter > div {
+    border-top: 1px dashed hsla(0, 100%, 30%, 0.25);
+    margin-bottom: 1rem;
+}
+
+#shop-item-filter select {
+    width: 8rem;
+}
+
 #shop-item-list {
-    margin: 3rem 0 2rem 0;
-
     max-width: 60vw;
-
+    padding-left: 2rem;
     display: grid;
     grid-template-columns: repeat(auto-fill, 12rem);
-    justify-content: space-between;
     grid-gap: 20px;
-
-    
+    justify-items: center;
 }
 
 .shop-item {
@@ -45,6 +71,7 @@
 #page-navigation {
     display: flex;
     flex-direction: row;
+    justify-content: center;
     column-gap: 4px;
     font-family: Roboto, sans-serif;
     margin-bottom: 4rem;
