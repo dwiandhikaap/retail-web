@@ -76,7 +76,7 @@ async function dbGetBarangList(category, sortMode, page){
     }
 
     if(orderString){
-        queryString += ` ORDER BY price ${orderString}`;
+        queryString += ` ORDER BY price*(100-discount)/100 ${orderString}`;
     }
 
     queryString += ` LIMIT 10`;
