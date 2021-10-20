@@ -124,7 +124,9 @@ async function generateItemFilter(){
         headers: {
             'Content-Type': 'application/json'
         }
-    }).then(res => res.json());
+    })
+    .then(res => res.json()
+    .then(data => data.sort()));
 
     const categorySelection = document.getElementById("select-category");
     const sortSelection = document.getElementById("select-sort");
