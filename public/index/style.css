@@ -54,6 +54,10 @@
     flex-direction: column;
 }
 
+img.shop-item-img {
+    object-fit: scale-down;
+}
+
 .shop-item-name {
     font-family: 'Open Sans', sans-serif;
     color: var(--p-color);

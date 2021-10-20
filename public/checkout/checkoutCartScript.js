@@ -23,7 +23,7 @@ const cartDataMarkup = (
         return `
             <input type="checkbox" name="checkout-cart-checkbox" id="checkout-cart-checkbox-${cartId}" class="checkout-cart-checkbox" checked>
             <div class="checkout-cart-thumbnail">
-                <img src="https://loremflickr.com/86/86" width="86" height="86">
+                <img src=/api/v1/product/img?id=${barangId} width="86" height="86">
             </div>
             <div class="checkout-cart-item-details">
                 <div class="product-name">

@@ -168,6 +168,10 @@
     font-size: 14px;
 }
 
+.checkout-cart-thumbnail img {
+    object-fit: scale-down;
+}
+
 #price-tax-value {
     color: var(--red-primary);
     font-size: 14px;

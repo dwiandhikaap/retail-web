@@ -16,8 +16,8 @@ h2 {
 }
 
 #item-thumbnail img{
-    object-fit: cover;
-    width: auto;
+    object-fit: scale-down;
+    width: 300px;
 }
 
 #item-details {

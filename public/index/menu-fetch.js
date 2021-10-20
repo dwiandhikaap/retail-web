@@ -6,7 +6,7 @@ const createShopItemElement = (itemData) => {
     const {discount, id, price, product_name, sold, stock} = itemData;
     const priceAfter = discount > 0 ? Math.floor(price*(100-discount)/100) : price;
     const markup = `
-        <img class="shop-item-img" src="https://loremflickr.com/144/144" width="144" height="144" alt="image of product">
+        <img class="shop-item-img" src="/api/v1/product/img?id=${id}" width="144" height="144" alt="${product_name}">
         <a href="/product?id=${id}" class="shop-item-name">${product_name}</a>
         ${discount > 0 ? `
         <div>

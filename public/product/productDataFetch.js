@@ -35,7 +35,7 @@ function sleep(ms) {
   }
 
 async function showProduct(){
-    const { product_name, price, discount, description, stock, sold } = await getProductData();
+    const { product_name, id, price, discount, description, stock, sold } = await getProductData();
 
     await sleep(300); // simulate loading
 
@@ -51,6 +51,8 @@ async function showProduct(){
     const itemDetailsNode = document.importNode(itemDetails, true);
 
     const finalPrice = Math.floor(price*(100-discount)/100);
+
+    itemThumbnailNode.querySelector("#item-thumbnail-img").setAttribute("src", `/api/v1/product/img?id=${id}`)
 
     itemDetailsNode.querySelector("#item-name").textContent = product_name;
     itemDetailsNode.querySelector("#item-price-container").querySelector("#item-price").textContent = moneyFormat(finalPrice);

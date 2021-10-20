@@ -61,7 +61,7 @@ const transactionProductsMarkup = (transactionData) => {
         const productMarkup = `
             <div class="transaction-product">
                 <div class="transaction-product-thumbnail">
-                    <img src="https://loremflickr.com/86/86" width="86" height="86">
+                    <img src=/api/v1/product/img?id=${barangId} width="86" height="86">
                 </div>
                 <div class="transaction-product-item-details">
                     <div class="product-name">
