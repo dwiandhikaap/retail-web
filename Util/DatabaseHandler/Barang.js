@@ -86,8 +86,6 @@ async function dbGetBarangList(category, sortMode, page){
         queryString += ` OFFSET ${offset}`;
     }
 
-
-
     const itemFound = (await sqlQuery(queryString+';'))[0];
 
     return {

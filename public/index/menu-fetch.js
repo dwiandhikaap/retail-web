@@ -46,7 +46,7 @@ function getURLParams(){
 function generateQueryString(URLParams){
     const {category, sort, page} = URLParams;
     let apiQueryString = '?';
-    if(category) apiQueryString += `category=${category}&`;
+    if(category) apiQueryString += `category=${category.replace("&", "%26")}&`;
     if(sort) apiQueryString += `sort=${sort}&`;
     if(page) apiQueryString += `page=${page}&`;
     
@@ -148,7 +148,7 @@ async function generateItemFilter(){
             URLParams.category = '';
         }
         else{
-            URLParams.category = category;
+            URLParams.category = category.replace("&", "%26");
         }
 
         URLParams.page = '';
@@ -175,8 +175,6 @@ function updateList(data){
     const {availablePage, items} = data;
 
     const itemList = document.getElementById("shop-item-list");
-    const temp = document.getElementsByTagName("template")[0];
-    const item = temp.content.querySelector(".shop-item");
 
     for(itemData of items){
         const newItem = createShopItemElement(itemData);
