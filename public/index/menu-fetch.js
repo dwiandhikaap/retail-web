@@ -2,6 +2,33 @@
     Utility functions
 */
 
+const createShopItemElement = (itemData) => {
+    const {discount, id, price, product_name, sold, stock} = itemData;
+    const priceAfter = discount > 0 ? Math.floor(price*(100-discount)/100) : price;
+    const markup = `
+        <img class="shop-item-img" src="https://loremflickr.com/144/144" width="144" height="144" alt="image of product">
+        <a href="/product?id=${id}" class="shop-item-name">${product_name}</a>
+        ${discount > 0 ? `
+        <div>
+            <span class="shop-item-price-before">${moneyFormat(price)}</span>
+            <span class="shop-item-discount">-${discount}%</span>
+        </div>
+        ` : ``}
+        <span class="shop-item-price-after">${moneyFormat(priceAfter)}</span>
+        
+        <div>
+            ${sold > 0 ? `<span class="shop-item-sold">${sold} sold</span>` : ''}
+            <span class="shop-item-stock">${stock} left!</span>
+        </div>
+    `
+
+    const element = document.createElement('div');
+    element.className = 'shop-item';
+    element.innerHTML = markup;
+
+    return element;
+}
+
 function getURLParams(){
     const params = new URLSearchParams(window.location.search);
     const category = params.get('category');
@@ -150,11 +177,7 @@ function updateList(data){
     const item = temp.content.querySelector(".shop-item");
 
     for(itemData of items){
-        const newItem = document.importNode(item, true);
-        newItem.querySelector('.shop-item-name').textContent = itemData.product_name;
-        newItem.querySelector('.shop-item-name').setAttribute("href", `/product?id=${itemData.id}`);
-        newItem.querySelector('.shop-item-price').textContent = moneyFormat(itemData.price);
-        newItem.querySelector('.shop-item-stock').textContent = itemData.stock + " left!";
+        const newItem = createShopItemElement(itemData);
         itemList.appendChild(newItem);
     }
 
