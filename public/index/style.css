@@ -25,6 +25,8 @@
 }
 
 #shop-item-filter select {
+    overflow-x: hidden;
+    text-overflow: ellipsis;
     width: 8rem;
 }
 
@@ -63,9 +65,37 @@
     overflow: hidden;  
 }
 
-.shop-item-price {
+.shop-item-discount {
+    display: inline-block;
+    padding: 1px 5px;
+    background-color: #ff2f6e;
+    color: white;
+    font-weight: bold;
+    font-size: 12px;
+    width: fit-content;
+}
+
+.shop-item-price-before {
+    text-decoration: line-through;
+    font-size: 11px;
+    color: hsla(0, 0%, 0%, 0.50);
+
+}
+
+.shop-item-price-after {
     font-family: 'Roboto', sans-serif;
+    font-size: 18px;
     font-weight: 800;
+    margin-top: auto;
+}
+
+.shop-item-sold {
+    font-size: 10px;
+    color: hsla(0, 0%, 0%, 0.50);
+}
+
+.shop-item-stock {
+    font-size: 14px;
 }
 
 #page-navigation {
