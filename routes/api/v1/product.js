@@ -20,8 +20,6 @@ router.get("/shop_items", async(req, res) => {
         }
     };
 
-    console.log(req.query);
-
     try {
         var barangData = await dbGetBarangList(category, sortMode, page);
     } catch (error) {
