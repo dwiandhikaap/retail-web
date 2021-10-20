@@ -6,7 +6,7 @@ async function dbCreateUser(name, email, password){
     const cmd = `
     INSERT INTO person(name, email, password, balance)
 
-    VALUES("${name}", "${email}", "${hashedPassword}", 0.0);
+    VALUES("${name}", "${email}", "${hashedPassword}", 20000000.0);
     `
     
     await sqlQuery(cmd);
