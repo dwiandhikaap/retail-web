@@ -298,11 +298,7 @@ footer{
     margin: 1rem;
 }
 
-.footer-box-3{
-    width: 100%;
-}
-
-.footer-box-2, .footer-box-3{
+.footer-box-2{
     display: inline-block;
     vertical-align: top;
 }
