@@ -1,11 +1,11 @@
-const { RejectedPromoCode, InvalidPromoData } = require("../CustomException");
+const { RejectedPromoCode, InvalidPromoData, PromoQuotaExceeded } = require("../CustomException");
 const { sqlQuery } = require("../DatabaseHandler");
 const { isStringSus } = require("../Utility");
 
 async function createPromoCode(promoData){
     const {code:_code, type:_type, value:_value, quota:_quota, min_spent: _min_spent, active:_active} = promoData;
 
-    for(data of promoData){
+    for(data of Object.values(promoData)){
         if(isStringSus(data.toString())){
             throw new InvalidPromoData("Sus string is detected")
         }
@@ -39,22 +39,6 @@ async function getPromoCodeData(code){
     `
 
     return (await sqlQuery(queryString))[0][0];
-}
-
-async function decreaseQuotaPromoCode(code){
-    // We dont actually need to check , 
-    // but just in case we need it in future changes..
-    if(isStringSus(code)){
-        throw new RejectedPromoCode("sus promo code!");
-    }
-
-    const queryString = `
-        UPDATE promo_code
-        set quota = quota-1
-        where code="${code}";
-    `
-
-    await sqlQuery(queryString);
 }
 
 async function validatePromoData(totalSpent, promoData){
@@ -119,6 +103,27 @@ function moneyFormat(amount){
 }
 
 /* EXPORT FUNCTIONS BELOW */
+async function dbConsumePromoCode(code){
+    // We dont actually need to check , 
+    // but just in case we need it in future changes..
+    if(isStringSus(code)){
+        throw new RejectedPromoCode("sus promo code!");
+    }
+
+    const promoData = await getPromoCodeData(code);
+
+    if(promoData.quota <= 0){
+        return;
+    }
+
+    const queryString = `
+        UPDATE promo_code
+        set quota = quota-1
+        where code="${code}";
+    `
+
+    await sqlQuery(queryString);
+}
 
 async function calculatePromoDiscount(totalSpent, promoData){    
     if(!await validatePromoData(totalSpent, promoData)){
@@ -156,11 +161,11 @@ async function applyPromoCode(totalSpent, code){
         throw new RejectedPromoCode("Unknown promo code!");
     }
 
-    const discount = await calculatePromoDiscount(totalSpent, promoData);
-    if(code.quota > 0){
-        await decreaseQuotaPromoCode(code);
+    if(promoData.quota == 0){
+        throw new PromoQuotaExceeded("Kuota promo telah habis!");
     }
 
+    const discount = await calculatePromoDiscount(totalSpent, promoData);
     return discount;
 }
 
@@ -185,4 +190,5 @@ module.exports = {
     createPromoCode : createPromoCode,
     getPromoDetails : getPromoDetails,
     applyPromoCode : applyPromoCode,
+    dbConsumePromoCode : dbConsumePromoCode
 }
