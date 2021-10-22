@@ -6,7 +6,7 @@
     U   - Utility
 */
 function isStringSus(string){
-    return !(string.match("^[A-Za-z0-9]+$"));
+    return !(string.match("^[A-Za-z0-9-_]+$"));
 }
 
 // TODO: use escaped symbol instead
