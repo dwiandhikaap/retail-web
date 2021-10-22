@@ -26,10 +26,18 @@ function InvalidPromoData(message){
     return error;
 }
 
+function PromoQuotaExceeded(message){
+    const error = new Error(message)
+    
+    error.code = "PROMO_QUOTA_EXCEEDED";
+    return error;
+}
+
 
 module.exports = {
     InvalidCartRequest : InvalidCartRequest,
     CartNotFound : CartNotFound,
     RejectedPromoCode : RejectedPromoCode,
-    InvalidPromoData : InvalidPromoData
+    InvalidPromoData : InvalidPromoData,
+    PromoQuotaExceeded: PromoQuotaExceeded
 }

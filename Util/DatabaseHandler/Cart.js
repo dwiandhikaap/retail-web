@@ -1,7 +1,7 @@
 const { InvalidCartRequest, CartNotFound } = require("../CustomException");
 const { sqlQuery } = require("../DatabaseHandler");
 const { dbIsStockEnough, dbDecreaseBarangStock, dbIncreaseBarangSold } = require("./Barang");
-const { applyPromoCode } = require("./Promo");
+const { applyPromoCode, dbConsumePromoCode } = require("./Promo");
 const { dbCreateTransactionEvent, dbCreateTransactionData } = require("./Transaction");
 const { dbGetUserBalance, dbDecreaseUserBalance } = require("./User");
 
@@ -193,6 +193,7 @@ async function dbValidateCartTransaction(cartEntries, promoCode, userId){
         await dbCreateTransactionData(transactionId, cartId, product_name, price, cartEntry.cart_price, barangDiscount);
     }
     
+    await dbConsumePromoCode(promoCode);
     await dbDecreaseUserBalance(userId, finalPrice);
 }
 

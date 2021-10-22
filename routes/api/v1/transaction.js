@@ -36,7 +36,8 @@ router.post('/pay', async(req, res) => {
         await dbValidateCartTransaction(cartEntries, promoCode, userId)
     } catch (error) {
         if( error.code == "INVALID_CART_REQUEST" || 
-            error.code == "REJECTED_PROMO_CODE"){
+            error.code == "REJECTED_PROMO_CODE"  || 
+            error.code == "PROMO_QUOTA_EXCEEDED"){
             res.status(400).send(error.message)
             return;
         }
