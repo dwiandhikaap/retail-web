@@ -9,8 +9,9 @@ function isStringSus(string){
     return !(string.match("^[A-Za-z0-9]+$"));
 }
 
+// TODO: use escaped symbol instead
 function isRequestQueryValid(string){
-    return !(string.match("^[A-Za-z0-9_ &]+$"));
+    return !(string.match("^[A-Za-z0-9_ &-]+$"));
 }
 
 function clamp(num, min, max){
