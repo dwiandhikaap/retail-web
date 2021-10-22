@@ -49,7 +49,7 @@ async function dbGetBarangAvailablePage(category){
 
     const itemsFound = (await sqlQuery(queryString+';'))[0];
 
-    return Math.ceil(Object.keys(itemsFound).length/10);
+    return Math.max(Math.ceil(Object.keys(itemsFound).length/10), 1);
 }
 
 async function dbGetBarangList(category, sortMode, page){
